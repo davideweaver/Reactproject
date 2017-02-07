@@ -11,7 +11,7 @@ class DiscoverView extends Component {
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       dataSource: ds.cloneWithRows([
-        'Popular Sessions', 'New Sessions', 'Popular Speakers'
+        "Popular Sessions", "New Sessions", "Popular Speakers"
       ])
     };
   }
