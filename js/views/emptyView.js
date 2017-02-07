@@ -1,17 +1,19 @@
 import React, { Component } from "react"
 import { StyleSheet, View, Button } from "react-native"
 import { connect } from "react-redux"
-import ToolbarButton from "../components/toolbarButton"
+import { HeaderBackButton, CardStack } from "react-navigation"
+
+const BackButton = CardStack.Header.BackButton;
 
 class EmptyView extends Component {
 
   static navigationOptions = {
-    title: "I am empty",
+    title: "Empty",
     header: ({goBack}) => ({
       left: (
-          <ToolbarButton
-            name="arrow-left"
-            onPress={() => goBack(null)}
+        <BackButton
+          onPress={() => goBack(null)}
+          title="Discover"
           />
         )
     })

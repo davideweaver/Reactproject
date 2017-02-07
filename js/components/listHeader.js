@@ -1,9 +1,17 @@
-import React, { Component } from "react"
+import React, { Component, PropTypes } from "react"
 import { StyleSheet, View, Text } from "react-native"
 import Toolbar from "./toolbar"
-import Styles, { Color } from "../styles"
+import Styles, { Color, Dims } from "../styles"
 
 export default class ListHeader extends Component {
+
+  static propTypes = {
+    title: PropTypes.string.isRequired
+  }
+
+  static defaultProps = {
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -30,8 +38,8 @@ var styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     paddingTop: 26,
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: Dims.horzPadding,
+    paddingRight: Dims.horzPadding,
     paddingBottom: 10
   },
   tools: {

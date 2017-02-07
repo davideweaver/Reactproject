@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react"
 import { StyleSheet, View, ListView, Text, TouchableHighlight } from "react-native"
 import ListHeader from "../components/listHeader"
 import { connect } from "react-redux"
-import Styles, { Color } from "../styles"
+import Styles, { Color, Dims } from "../styles"
 
 class DiscoverView extends Component {
 
@@ -56,7 +56,7 @@ class DiscoverView extends Component {
         style={{
           height: StyleSheet.hairlineWidth,
           backgroundColor: "rgba(225, 225, 225, 255)",
-          marginLeft: 20
+          marginLeft: Dims.horzPadding
         }}
       />
     );
@@ -64,16 +64,11 @@ class DiscoverView extends Component {
 }
 
 let styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    paddingTop: 22
-  },
   row: {
     flexDirection: "row",
     justifyContent: "center",
     paddingTop: 11,
-    paddingLeft: 20,
+    paddingLeft: Dims.horzPadding,
     paddingBottom: 11
   },
   text: {

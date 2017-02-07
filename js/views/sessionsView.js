@@ -1,5 +1,5 @@
-import React, { Component, PropTypes } from 'react'
-import { StyleSheet, View, ListView, Text, TouchableHighlight } from 'react-native'
+import React, { Component, PropTypes } from "react"
+import { StyleSheet, View, ListView, Text, TouchableHighlight } from "react-native"
 import { connect } from "react-redux"
 import ListHeader from "../components/listHeader"
 import ToolbarButton from "../components/toolbarButton"
@@ -53,13 +53,11 @@ class SessionsView extends Component {
     const {navigate} = this.props.navigation;
     var onPress = () => {
       highlightRow(sectionID, rowID);
-      //navigate("SessionStack", {}, {type: "Navigate", routeName: "Session", params: {session: session}});
-
       navigate("SessionsTab", {}, {
-        type: "Navigate", 
+        type: "Navigation/NAVIGATE", 
         routeName: "SessionStack",
         action: {
-          type: "Navigate", 
+          type: "Navigation/NAVIGATE", 
           routeName: "Session", 
           params: {session: session}
         }});
@@ -113,16 +111,6 @@ let styles = StyleSheet.create({
     flex: 1,
   }
 })
-
-function cloneWithData(dataSource, data) {
-  if (!data) {
-    return dataSource.cloneWithRows([]);
-  }
-  if (Array.isArray(data)) {
-    return dataSource.cloneWithRows(data);
-  }
-  return dataSource.cloneWithRowsAndSections(data);
-}
 
 function select(state) {
     return {

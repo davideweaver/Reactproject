@@ -4,4 +4,8 @@ const Color = {
     tint: "red"
 }
 
-export { Color }
+const Dims = {
+    horzPadding: 16
+}
+
+export { Color, Dims }

@@ -1,7 +1,9 @@
 import React, { Component } from "react"
 import { StyleSheet, View, Button, Text } from "react-native"
 import { connect } from "react-redux"
-import ToolbarButton from "../components/toolbarButton"
+import { HeaderBackButton, CardStack } from "react-navigation"
+
+const BackButton = CardStack.Header.BackButton;
 
 class SessionView extends Component {
 
@@ -9,9 +11,9 @@ class SessionView extends Component {
     title: "Session",
     header: ({goBack}) => ({
       left: (
-          <ToolbarButton
-            name="arrow-left"
-            onPress={() => goBack(null)}
+        <BackButton
+          onPress={() => goBack(null)}
+          title="All"
           />
         )
     })
@@ -22,17 +24,26 @@ class SessionView extends Component {
     
   }
 
-  componentDidMount() {
-    console.log("NAV: ", this.props.navigation)
+  _renderTags(tags) {
+    return tags.map(function(tag, i){
+      return(
+        <View key={i}>
+          <Text>{tag}</Text>
+        </View>
+      );
+    });
   }
 
   render() {
     const { state } = this.props.navigation;
-    console.log(state);
-    var title = state.params.session.title;
+    const session = state.params.session;
+    console.log(session);
     return (
       <View style={styles.container}>
-        <Text>heelo {title}</Text>
+        <Text style={styles.location}>{session.location}</Text>
+        <Text style={styles.title}>{session.title}</Text>
+        <Text style={styles.description}>{session.description}</Text>
+        { this._renderTags(session.tags) }
       </View>
     );
   }
@@ -42,6 +53,14 @@ let styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    padding: 10
+  },
+  location: {
+    marginBottom: 10
+  },
+  title: {
+    fontWeight: "bold",
+    marginBottom: 10
   }
 })
 

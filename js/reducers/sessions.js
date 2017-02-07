@@ -19,3 +19,4 @@ function fromParseSessions(session) {
 }
 
 export default createParseReducer("LOADED_SESSIONS", fromParseSessions);
+

@@ -1,5 +1,6 @@
-import Parse from "parse/react-native";
-import { InteractionManager } from "react-native";
+import Parse from "parse/react-native"
+import { InteractionManager } from "react-native"
+import * as Types from "./actionTypes"
 
 function logError(err) {
 }
@@ -35,32 +36,3 @@ export async function loadSessions() {
         list: list,
     };
 }
-
-export async function loadSessions2() {
-  const config = await Parse.Config.get(); 
-  return {
-    type: "LOADED_SESSIONS",
-    config,
-  };
-}
-
-/*
-export function loadSessions() {
-    loadParseQuery(
-      "LOADED_SESSIONS",
-      new Parse.Query("Agenda")
-        .include("speakers")
-        .ascending("startTime")
-    )
-}
-*/
-
-/*export default {
-  loadSessions: () =>
-    loadParseQuery(
-      "LOADED_SESSIONS",
-      new Parse.Query("Agenda")
-        .include("speakers")
-        .ascending("startTime")
-    )
-};*/
