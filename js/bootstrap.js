@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { Provider } from "react-redux"
 import Parse from "parse/react-native"
 import App from "./app"
+import codePush from "react-native-code-push"
 import config from "./config"
 import configureStore from "./store/configureStore"
 
@@ -29,5 +30,5 @@ export default function bootstrap() {
         }
     }
 
-    return Root;
+    return codePush({ updateDialog: true, installMode: codePush.InstallMode.IMMEDIATE })(Root);
 }

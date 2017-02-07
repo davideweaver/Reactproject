@@ -36,7 +36,7 @@ export default class ListSearchHeader extends Component {
     let marginTop = 0;
     let marginRight = 0;
     if (this.state.isSearching) {
-      marginTop = -75;
+      marginTop = -70;
       marginRight = 65;
     }
 
