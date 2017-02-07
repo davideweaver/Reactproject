@@ -1,4 +1,10 @@
-import createParseReducer from "./createParseReducer";
+import * as Types from "../actions/actionTypes"
+import createParseReducer from "./createParseReducer"
+
+const initialState = {
+  sessions: [],
+  sessionsSearchResults: []
+};
 
 function fromParseSessions(session) {
   return {
@@ -18,5 +24,17 @@ function fromParseSessions(session) {
   };
 }
 
-export default createParseReducer("LOADED_SESSIONS", fromParseSessions);
+export default function handleActions(state = initialState, action = {}) {
+    switch (action.type) {
+        case Types.SESSIONS_LOADED:
+            return {...state, sessions: action.list.map(fromParseSessions)};
+        case Types.SESSIONS_SEARCH:
+            return {...state, sessionsSearchResults: action.results};
+        case Types.SESSIONS_SEARCH_CLEAR:
+            return {...state, sessionsSearchResults: []};
+        default:
+            return state;
+    }
+}
+
 

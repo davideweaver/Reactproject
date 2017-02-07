@@ -32,7 +32,7 @@ export async function loadSessions() {
     }
     //console.log(list);
     return {
-        type: "LOADED_SESSIONS",
+        type: Types.SESSIONS_LOADED,
         list: list,
     };
 }

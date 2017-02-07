@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react"
 import { StyleSheet, View, ListView, Text, TouchableHighlight } from "react-native"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
-import * as sessionActions from '../actions/sessionActions';
+import * as sessionActions from "../actions/sessionActions"
 import ListSearchHeader from "../components/listSearchHeader"
 import Styles, { Color, Dims } from "../styles"
 
@@ -98,18 +98,25 @@ class SearchView extends Component {
     );
   }
 
-  _renderResultsRow(rowData, sectionID, rowID, highlightRow) {
+  _renderResultsRow(session, sectionID, rowID, highlightRow) {
     const {navigate} = this.props.navigation;
     var onPress = () => {
       highlightRow(sectionID, rowID);
-      navigate("FiltersStack");
+      navigate("SearchTab", {}, {
+        type: "Navigation/NAVIGATE", 
+        routeName: "SessionStack",
+        action: {
+          type: "Navigation/NAVIGATE", 
+          routeName: "Session", 
+          params: {session: session}
+        }});
     };
     return (
       <TouchableHighlight onPress={onPress} underlayColor="#eee">
         <View>
           <View style={styles.rowResults}>
-            <Text style={[styles.text, {color:Color.tint}]}>
-              {rowData}
+            <Text style={styles.textResults}>
+              {session.title}
             </Text>
           </View>
         </View>
@@ -131,7 +138,7 @@ class SearchView extends Component {
   }
 
   _showSearchResults(text) {
-    this.props.actions.search(text);
+    this.props.sessionActions.search(text);
   }
 
   _onSearchStarted() {
@@ -140,7 +147,7 @@ class SearchView extends Component {
 
   _onSearchEnded() {
     this.setState({isSearching: false});
-    this.props.actions.searchClear();
+    this.props.sessionActions.searchClear();
   }
 }
 
@@ -155,15 +162,17 @@ let styles = StyleSheet.create({
   rowResults: {
     flexDirection: "row",
     justifyContent: "center",
-    paddingTop: 11,
-    paddingLeft: Dims.horzPadding,
-    paddingBottom: 11,
+    padding: 10,
+    paddingLeft: 20,
     backgroundColor: "#fff"
   },
   text: {
     flex: 1,
     fontSize: 22,
     color: "red"
+  },
+  textResults: {
+    flex: 1
   },
   results: {
     backgroundColor: "#eee",
@@ -178,13 +187,13 @@ let styles = StyleSheet.create({
 function select(state) {
     return {
         searches: state.searches,
-        sessionsSearched: state.sessionsSearched
+        sessionsSearched: state.sessionData.sessionsSearchResults
     };
 }
 
 function actions(dispatch) {
     return {
-      actions: bindActionCreators(sessionActions, dispatch)
+      sessionActions: bindActionCreators(sessionActions, dispatch)
     }
 }
 

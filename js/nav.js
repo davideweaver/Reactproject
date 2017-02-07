@@ -46,6 +46,13 @@ const SessionsTab = StackNavigator({
   headerMode: "none"
 });
 
+const SearchTab = StackNavigator({
+  SearchView: { screen: SearchView },
+  SessionStack: { screen: SessionStack }
+}, {
+  headerMode: "none"
+});
+
 const Tabs = TabNavigator({
   DiscoverTab: {
     screen: DiscoverTab,
@@ -53,7 +60,7 @@ const Tabs = TabNavigator({
       tabBar: () => ({
         label: "Discover",
         icon: ({ tintColor, focused }) => (
-          <Icon name={focused ? 'ios-analytics' : 'ios-analytics-outline'} size={26} style={{ color: Color.tint }}
+          <Icon name={focused ? 'ios-analytics' : 'ios-analytics-outline'} size={26} style={focused ? {color: Color.tint} : {color: "#999"}}
           />
         ),
       }),
@@ -65,7 +72,7 @@ const Tabs = TabNavigator({
       tabBar: () => ({
         label: "Sessions",
         icon: ({ tintColor, focused }) => (
-          <Icon name={focused ? 'ios-calendar' : 'ios-calendar-outline'} size={26} style={{ color: Color.tint }}
+          <Icon name={focused ? 'ios-calendar' : 'ios-calendar-outline'} size={26} style={focused ? {color: Color.tint} : {color: "#999"}}
           />
         ),
       }),
@@ -77,19 +84,19 @@ const Tabs = TabNavigator({
       tabBar: () => ({
         label: "Speakers",
         icon: ({ tintColor, focused }) => (
-          <Icon name={focused ? 'ios-body' : 'ios-body-outline'} size={26} style={{ color: Color.tint }}
+          <Icon name={focused ? 'ios-body' : 'ios-body-outline'} size={26} style={focused ? {color: Color.tint} : {color: "#999"}}
           />
         ),
       }),
     },
   },
   SearchTab: {
-    screen: SearchView,
+    screen: SearchTab,
     navigationOptions: {
       tabBar: () => ({
         label: "Search",
         icon: ({ tintColor, focused }) => (
-          <Icon name={focused ? "ios-search" : "ios-search-outline"} size={26} style={{ color: Color.tint }}
+          <Icon name={focused ? "ios-search" : "ios-search-outline"} size={26} style={focused ? {color: Color.tint} : {color: "#999"}}
           />
         ),
       }),

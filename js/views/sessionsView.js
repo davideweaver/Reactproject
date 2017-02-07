@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from "react"
 import { StyleSheet, View, ListView, Text, TouchableHighlight } from "react-native"
+import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import ListHeader from "../components/listHeader"
 import ToolbarButton from "../components/toolbarButton"
-import { loadSessions } from "../actions/parse"
+import * as sessionActions from "../actions/sessionActions"
 import Styles, { Color } from "../styles"
 
 class SessionsView extends Component {
@@ -17,7 +18,7 @@ class SessionsView extends Component {
   }
 
   componentDidMount() {
-    this.props.loadSessions();
+    this.props.sessionActions.load();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -32,7 +33,7 @@ class SessionsView extends Component {
     const {navigate} = this.props.navigation;
 
     var listHeader = (<ListHeader title={"Sessions"}>
-      <ToolbarButton name="refresh" color={Color.tint} onPress={() => this.props.loadSessions()} />
+      <ToolbarButton name="refresh" color={Color.tint} onPress={() => this.props.sessionActions.load()} />
       <ToolbarButton name="add" color={Color.tint} onPress={() => navigate("Modals", {}, "AddSession")} />
     </ListHeader>)
 
@@ -61,8 +62,6 @@ class SessionsView extends Component {
           routeName: "Session", 
           params: {session: session}
         }});
-
-
     };
     return (
       <TouchableHighlight onPress={onPress} underlayColor="#eee">
@@ -92,11 +91,6 @@ class SessionsView extends Component {
 }
 
 let styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    paddingTop: 22
-  },
   row: {
     flexDirection: "row",
     justifyContent: "center",
@@ -114,14 +108,13 @@ let styles = StyleSheet.create({
 
 function select(state) {
     return {
-        sessions: state.sessions,
-        isLoggedIn: false //store.user.isLoggedIn || store.user.hasSkippedLogin,
+        sessions: state.sessionData.sessions
     };
 }
 
 function actions(dispatch) {
     return {
-        loadSessions: () => dispatch(loadSessions()),
+        sessionActions: bindActionCreators(sessionActions, dispatch)
     }
 }
 

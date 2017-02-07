@@ -1,10 +1,8 @@
 import { combineReducers } from "redux"
-import sessions from "./sessions"
+import sessionData from "./sessionData"
 import searches from "./searches"
-import sessionsSearched from "./sessionsSearched"
 
 export default combineReducers({
-  sessions: sessions,
-  sessionsSearched: sessionsSearched,
+  sessionData: sessionData,
   searches: searches
 });
