@@ -58,8 +58,9 @@ export default class Searchbar extends Component {
             placeholderTextColor={placeholderColor}
             underlineColorAndroid="transparent" 
             returnKeyType="search"
+            selectTextOnFocus={true}
             enablesReturnKeyAutomatically={true}
-            onSubmitEditing={(event) => this.props.onSearchSubmit(event.nativeEvent.text)}
+            onSubmitEditing={this._onSubmitEnding.bind(this)}
             />
         </View>
       </View>
@@ -70,13 +71,15 @@ export default class Searchbar extends Component {
     this.setState({value: e});
     this.props.onSearchChange(e);
   }
+
+  _onSubmitEnding(e) {
+    this.props.onSearchSubmit(e.nativeEvent.text)
+  }
 }
 
 var styles = StyleSheet.create({
   container: {
-    flex: 1,
-    
-    
+    flex: 1
   },
   border: {
     flexDirection: "row",

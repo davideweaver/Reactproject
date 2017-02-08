@@ -2,19 +2,27 @@ import Parse from "parse/react-native"
 import { InteractionManager } from "react-native"
 import * as Types from "./actionTypes"
 
-export async function load() {
+function shouldLoadSessions(state) {
+  return !(state.sessionData && state.sessionData.isLoadingSessions);
+}
+
+export function load() {
+  return async (dispatch, getState) => {
+    if(!shouldLoadSessions(getState())){
+      return Promise.resolve();
+    }
+
+    dispatch({type: Types.SESSIONS_LOAD_START});
+
     await InteractionManager.runAfterInteractions();
     var query = new Parse.Query("Agenda").include("speakers").ascending("startTime");
-    try {
-        var list = await query.find();
-    }
-    catch (e) {
-      console.log(e);
-    }
-    return {
-        type: Types.SESSIONS_LOADED,
-        list: list,
-    };
+    const data = await query.find();
+
+    return dispatch({
+      type: Types.SESSIONS_LOAD_DONE,
+      results: data
+    });
+  }
 }
 
 export function searchClear() {

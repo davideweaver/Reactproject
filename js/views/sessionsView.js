@@ -32,7 +32,7 @@ class SessionsView extends Component {
   render() {
     const {navigate} = this.props.navigation;
 
-    var listHeader = (<ListHeader title={"Sessions"}>
+    var listHeader = (<ListHeader title={"Sessions"} isLoading={this.props.isLoading}>
       <ToolbarButton name="refresh" color={Color.tint} onPress={() => this.props.sessionActions.load()} />
       <ToolbarButton name="add" color={Color.tint} onPress={() => navigate("Modals", {}, "AddSession")} />
     </ListHeader>)
@@ -47,7 +47,7 @@ class SessionsView extends Component {
           renderSeparator={this._renderSeparator}
         />
       </View>
-    );
+    )
   }
 
   _renderRow(session, sectionID, rowID, highlightRow) {
@@ -108,7 +108,8 @@ let styles = StyleSheet.create({
 
 function select(state) {
     return {
-        sessions: state.sessionData.sessions
+        sessions: state.sessionData.sessions,
+        isLoading: state.sessionData.isLoadingSessions
     };
 }
 

@@ -28,20 +28,31 @@ export default class ListSearchHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSearching: false
+      isSearching: false,
+      isDone: false
     };
+  }
+
+  search(text) {
+    this._onSearchBegin();
+    this.refs.searchBar.value = text;
+    this._onSearchSubmit(text);
   }
 
   render() {
     let marginTop = 0;
     let marginRight = 0;
+    let paddingBottom = 0;
     if (this.state.isSearching) {
       marginTop = -70;
       marginRight = 65;
+      paddingBottom = 70;
     }
 
+    let btnText = this.state.isDone ? "Done" : "Cancel";
+
     return (
-      <View style={[styles.container, {marginTop: marginTop}]}>
+      <View style={[styles.container, {marginTop: marginTop, paddingBottom: paddingBottom}]}>
         <View style={styles.content}>
           <Text style={styles.text}>{this.props.title}</Text>
           <View style={styles.tools}>
@@ -54,16 +65,16 @@ export default class ListSearchHeader extends Component {
           <Searchbar 
             ref="searchBar"
             placeholder={this.props.placeholder}
-            onSearchChange={this.props.onSearchChange}
-            onSearchSubmit={this.props.onSearchSubmit}
+            onSearchChange={this._onSearchChange.bind(this)}
+            onSearchSubmit={this._onSearchSubmit.bind(this)}
             onFocus={this._onSearchBegin.bind(this)}
             onBlur={() => false} />
           <TouchableOpacity 
-            style={{marginRight: marginRight}}>
+            style={{marginRight: marginRight}}
+            onPress={this._onSearchEnd.bind(this)}>
             <Text 
-              style={styles.cancel} 
-              onPress={this._onSearchEnd.bind(this)}>
-                Cancel
+              style={styles.cancel}>
+                {btnText}
               </Text>
           </TouchableOpacity>
         </View>
@@ -72,17 +83,27 @@ export default class ListSearchHeader extends Component {
     )
   }
 
+  _onSearchSubmit(text) {
+    this.setState({isDone: true});
+    this.props.onSearchSubmit(text);
+  }
+
+  _onSearchChange(text) {
+    this.setState({isDone: false});
+    this.props.onSearchChange(text);
+  }
+
   _onSearchBegin() {
     LayoutAnimation.easeInEaseOut();
-    this.setState({isSearching: true});
+    this.setState({isSearching: true, isDone: false});
     this.props.onSearchStarted();
   }
 
   _onSearchEnd() {
-    LayoutAnimation.easeInEaseOut();
-    this.setState({isSearching: false});
-    this.refs.searchBar.value = "";
     dismissKeyboard();
+    LayoutAnimation.easeInEaseOut();
+    this.setState({isSearching: false, isDone: false});
+    this.refs.searchBar.value = "";
     this.props.onSearchEnded();
   }
 }
@@ -119,13 +140,14 @@ var styles = StyleSheet.create({
   cancel: {
     color: Color.tint,
     fontSize: 16,
-    marginTop: 13,
-    marginLeft: 15,
-    marginRight: -100
+    marginTop: 3,
+    marginLeft: 5,
+    marginRight: -100,
+    padding: 10
   },
   border: {
     //height: StyleSheet.hairlineWidth,
-    height: 10,
+    height: 20,
     backgroundColor: "rgba(255, 255, 255, 255)",
     marginLeft: 20,
   }

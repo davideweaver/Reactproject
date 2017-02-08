@@ -1,31 +1,55 @@
 import React, { Component, PropTypes } from "react"
-import { StyleSheet, View, Text } from "react-native"
+import { StyleSheet, View, Text, ActivityIndicator } from "react-native"
 import Toolbar from "./toolbar"
 import Styles, { Color, Dims } from "../styles"
 
 export default class ListHeader extends Component {
 
   static propTypes = {
-    title: PropTypes.string.isRequired
+    title: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool
   }
 
   static defaultProps = {
+    title: "",
+    isLoading: false
   }
 
   render() {
+
+    const toolbar = <Toolbar>{this.props.children}</Toolbar>
+    const indicator = <ActivityIndicator color="black" style={{backgroundColor:"white",marginBottom:5,marginRight:6}} />
+    const tools = this.props.isLoading ? indicator : toolbar;
+
     return (
       <View style={styles.container}>
         <View style={styles.content}>
           <Text style={styles.text}>{this.props.title}</Text>
           <View style={styles.tools}>
-            <Toolbar>
-              {this.props.children}
-            </Toolbar>
+            {tools}
           </View>
         </View>
         <View style={styles.border} />
       </View>
     )
+  }
+
+  _renderTools() {
+    if (this.props.isLoading) {
+      return (
+        <ActivityIndicator 
+          color="black"
+          style={{backgroundColor:"#FFF"}}
+          />
+      )
+    }
+    else {
+      return (
+        <Toolbar>
+          {this.props.children}
+        </Toolbar>
+      )
+    }
   }
 }
 

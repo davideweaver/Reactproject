@@ -103,6 +103,7 @@ const Tabs = TabNavigator({
     },
   },
 }, {
+  initialRouteName: "SearchTab",
   tabBarPosition: "bottom",
   tabBarOptions: {
       activeTintColor: Color.tint

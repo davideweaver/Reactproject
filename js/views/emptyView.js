@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { StyleSheet, View, Button } from "react-native"
 import { connect } from "react-redux"
-import { HeaderBackButton, CardStack } from "react-navigation"
+import { CardStack } from "react-navigation"
 
 const BackButton = CardStack.Header.BackButton;
 
@@ -27,7 +27,7 @@ class EmptyView extends Component {
     return (
       <View style={styles.container}>
       <Button
-        onPress={() => this.props.navigation.navigate('SecondFilter')}
+        onPress={() => this.props.navigation.navigate("SecondFilter")}
         title="Go to second filter"
       />
       </View>

@@ -2,22 +2,22 @@ import React, { Component } from "react"
 import { Provider } from "react-redux"
 import Parse from "parse/react-native"
 import App from "./app"
+import Config from "./config"
+import Store from "./store"
 import codePush from "react-native-code-push"
-import config from "./config"
-import configureStore from "./store/configureStore"
 
 export default function bootstrap() {
 
-    console.log("Parse: ", config.serverKey, config.serverURL)
+    console.log("Parse: ", Config.serverKey, Config.serverURL)
 
-    Parse.initialize(config.serverKey);
-    Parse.serverURL = `${config.serverURL}/parse`;
+    Parse.initialize(Config.serverKey);
+    Parse.serverURL = `${Config.serverURL}/parse`;
 
     class Root extends Component {
         constructor() {
             super();
             this.state = {
-                store: configureStore(),
+                store: Store.configure(),
             };
         }
 

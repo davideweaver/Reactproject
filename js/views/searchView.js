@@ -1,28 +1,36 @@
 import React, { Component, PropTypes } from "react"
-import { StyleSheet, View, ListView, Text, TouchableHighlight } from "react-native"
+import { StyleSheet, View, ListView, Text, TouchableHighlight, TouchableOpacity } from "react-native"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import * as sessionActions from "../actions/sessionActions"
+import * as searchActions from "../actions/searchActions"
 import ListSearchHeader from "../components/listSearchHeader"
+import ActionSheet from "react-native-actionsheet"
 import Styles, { Color, Dims } from "../styles"
 
 class SearchView extends Component {
 
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    const dsResults = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    const ds = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2,
+      sectionHeaderHasChanged: (s1, s2) => s1 !== s2
+    });
+    const dsResults = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2
+    });
     this.state = {
-      dataSource: ds.cloneWithRows(this.props.searches),
+      dataSource: ds.cloneWithRowsAndSections({"Recent":this.props.searches}),
       dataSourceResults: dsResults.cloneWithRows(this.props.sessionsSearched),
       isSearching: false
     };
+    this._header = null;
   }
-  
+
   componentWillReceiveProps(nextProps) {
     if (this.props.searches !== nextProps.searches) {
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(nextProps.searches),
+        dataSource: this.state.dataSource.cloneWithRowsAndSections({"Recent":nextProps.searches}),
       });
     }
     if (this.props.sessionsSearched !== nextProps.sessionsSearched) {
@@ -40,13 +48,27 @@ class SearchView extends Component {
           renderRow={this._renderRow.bind(this)}
           renderHeader={this._renderHeader.bind(this)}
           enableEmptySections={true}
-          renderSeparator={this._renderSeparator}
+          renderSeparator={this._renderSeparator.bind(this)}
+          renderSectionHeader={this._renderSectionHeader.bind(this)}
           keyboardShouldPersistTaps="always"
           scrollEnabled={!this.state.isSearching}
         />
         {this._renderResultsList()}
+        <ActionSheet 
+          ref="actionSheet"
+          options={["Clear Recent", "Cancel"]}
+          cancelButtonIndex={1}
+          destructiveButtonIndex={0}
+          onPress={this._handleActionSheet.bind(this)}
+        />
       </View>
     );
+  }
+
+  _handleActionSheet(index) {
+    if (index == 0) {
+      this.props.searchActions.clear();
+    }
   }
 
   _renderResultsList() {
@@ -70,6 +92,7 @@ class SearchView extends Component {
   _renderHeader() {
     return (
       <ListSearchHeader 
+        ref={component => this._header = component}
         title="Search" 
         placeholder="Search sessions"
         onSearchSubmit={this._showSearchResults.bind(this)} 
@@ -82,8 +105,7 @@ class SearchView extends Component {
   _renderRow(rowData, sectionID, rowID, highlightRow) {
     const {navigate} = this.props.navigation;
     var onPress = () => {
-      highlightRow(sectionID, rowID);
-      navigate("FiltersStack");
+      this._searchWithText(rowData);
     };
     return (
       <TouchableHighlight onPress={onPress} underlayColor="#eee">
@@ -124,6 +146,22 @@ class SearchView extends Component {
     );
   }
 
+  _renderSectionHeader(sectionData, category) {
+    var onPress = () => {
+      this.refs.actionSheet.show();
+    }
+    return (
+      <View style={styles.section}>
+        <Text style={styles.sectionText}>{category}</Text>
+        <TouchableOpacity onPress={onPress} style={styles.sectionLink} underlayColor="#eee">
+          <Text style={styles.sectionLinkText}>
+            Clear
+          </Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
     return (
       <View
@@ -135,6 +173,10 @@ class SearchView extends Component {
         }}
       />
     );
+  }
+
+  _searchWithText(text) {
+    this._header.search(text);
   }
 
   _showSearchResults(text) {
@@ -181,6 +223,28 @@ let styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0
+  },
+  section: {
+    flexDirection: "row",
+    paddingTop: 20,
+    paddingLeft: Dims.horzPadding,
+    paddingBottom: 5
+  },
+  sectionText: {
+    flex:1,
+    fontWeight: "700",
+    fontSize: 22,
+  },
+  sectionLink: {
+
+  },
+  sectionLinkText: {
+    color: Color.tint,
+    textAlign: "right",
+    paddingTop: 5,
+    paddingRight: 20,
+    paddingLeft: 20,
+    fontSize: 16
   }
 })
 
@@ -193,7 +257,8 @@ function select(state) {
 
 function actions(dispatch) {
     return {
-      sessionActions: bindActionCreators(sessionActions, dispatch)
+      sessionActions: bindActionCreators(sessionActions, dispatch),
+      searchActions: bindActionCreators(searchActions, dispatch)
     }
 }
 
