@@ -2,25 +2,40 @@ import React, { Component, PropTypes } from "react"
 import { StyleSheet, View, ListView, Text, TouchableHighlight } from "react-native"
 import ListHeader from "../components/listHeader"
 import { connect } from "react-redux"
+import ToolbarButton from "../components/toolbarButton"
 import Styles, { Color } from "../styles"
 
-class SpeakersView extends Component {
+class FavoritesView extends Component {
 
   constructor(props) {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows([])
+      dataSource: ds.cloneWithRows(props.favs)
     };
   }
   
+  componentWillReceiveProps(nextProps) {
+    if (this.props.favs !== nextProps.favs) {
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(nextProps.favs),
+      });
+    }
+  }
+
   render() {
+    const {navigate} = this.props.navigation;
+
+    var listHeader = (<ListHeader title={"Favorites"} isLoading={this.props.isLoading}>
+      <ToolbarButton name="user" color={Color.tint} onPress={() => navigate("Modals", {}, {type: "Navigation/NAVIGATE", routeName: "Profile"})} />
+    </ListHeader>)
+
     return (
       <View style={Styles.screenTop}>
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this._renderRow.bind(this)}
-          renderHeader={() => <ListHeader title={"Speakers"}/>}
+          renderHeader={() => listHeader}
           enableEmptySections={true}
           renderSeparator={this._renderSeparator}
         />
@@ -28,7 +43,7 @@ class SpeakersView extends Component {
     );
   }
 
-  _renderRow(rowData, sectionID, rowID, highlightRow) {
+  _renderRow(session, sectionID, rowID, highlightRow) {
     const {navigate} = this.props.navigation;
     var onPress = () => {
       highlightRow(sectionID, rowID);
@@ -38,8 +53,8 @@ class SpeakersView extends Component {
       <TouchableHighlight onPress={onPress} underlayColor="#eee">
         <View>
           <View style={styles.row}>
-            <Text style={[styles.text, {color:Color.tint}]}>
-              {rowData}
+            <Text style={styles.text}>
+              {session.title}
             </Text>
           </View>
         </View>
@@ -64,7 +79,9 @@ class SpeakersView extends Component {
 let styles = StyleSheet.create({
   row: {
     flexDirection: "row",
-    justifyContent: "center"
+    justifyContent: "center",
+    padding: 10,
+    paddingLeft: 20
   },
   text: {
     flex: 1
@@ -72,13 +89,14 @@ let styles = StyleSheet.create({
 })
 
 function select(state) {
-    return {
-    };
+  return {
+    favs: state.sessionData.sessionsSaved
+  };
 }
 
 function actions(dispatch) {
-    return {
-    }
+  return {
+  }
 }
 
-export default connect(select, actions)(SpeakersView)
+export default connect(select, actions)(FavoritesView)

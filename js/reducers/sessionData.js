@@ -3,7 +3,8 @@ import * as Types from "../actions/actionTypes"
 const initialState = {
   sessions: [],
   isLoadingSessions: false,
-  sessionsSearchResults: []
+  sessionsSearchResults: [],
+  sessionsSaved: []
 };
 
 function fromParseSessions(session) {
@@ -34,6 +35,9 @@ export default function handleActions(state = initialState, action = {}) {
       return {...state, sessionsSearchResults: action.results};
     case Types.SESSIONS_SEARCH_CLEAR:
       return {...state, sessionsSearchResults: []};
+    case Types.SESSIONS_ADD_FAVORITE:
+      const session = state.sessions.filter(session => session.id == action.id)[0];
+      return {...state, sessionsSaved: [...state.sessionsSaved, session]};
     default:
       return state;
   }

@@ -33,8 +33,8 @@ class SessionsView extends Component {
     const {navigate} = this.props.navigation;
 
     var listHeader = (<ListHeader title={"Sessions"} isLoading={this.props.isLoading}>
-      <ToolbarButton name="refresh" color={Color.tint} onPress={() => this.props.sessionActions.load()} />
       <ToolbarButton name="add" color={Color.tint} onPress={() => navigate("Modals", {}, "AddSession")} />
+      <ToolbarButton name="refresh" color={Color.tint} onPress={() => this.props.sessionActions.load()} />
     </ListHeader>)
 
     return (
@@ -53,7 +53,7 @@ class SessionsView extends Component {
   _renderRow(session, sectionID, rowID, highlightRow) {
     const {navigate} = this.props.navigation;
     var onPress = () => {
-      highlightRow(sectionID, rowID);
+      //highlightRow(sectionID, rowID);
       navigate("SessionsTab", {}, {
         type: "Navigation/NAVIGATE", 
         routeName: "SessionStack",
@@ -97,26 +97,22 @@ let styles = StyleSheet.create({
     padding: 10,
     paddingLeft: 20
   },
-  thumb: {
-    width: 64,
-    height: 64,
-  },
   text: {
     flex: 1,
   }
 })
 
 function select(state) {
-    return {
-        sessions: state.sessionData.sessions,
-        isLoading: state.sessionData.isLoadingSessions
-    };
+  return {
+    sessions: state.sessionData.sessions,
+    isLoading: state.sessionData.isLoadingSessions
+  };
 }
 
 function actions(dispatch) {
-    return {
-        sessionActions: bindActionCreators(sessionActions, dispatch)
-    }
+  return {
+    sessionActions: bindActionCreators(sessionActions, dispatch)
+  }
 }
 
 export default connect(select, actions)(SessionsView)

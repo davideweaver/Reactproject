@@ -20,7 +20,7 @@ class SearchView extends Component {
       rowHasChanged: (r1, r2) => r1 !== r2
     });
     this.state = {
-      dataSource: ds.cloneWithRowsAndSections({"Recent":this.props.searches}),
+      dataSource: ds.cloneWithRowsAndSections(this._getSearchesFromProps(props)),
       dataSourceResults: dsResults.cloneWithRows(this.props.sessionsSearched),
       isSearching: false
     };
@@ -30,7 +30,7 @@ class SearchView extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.searches !== nextProps.searches) {
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRowsAndSections({"Recent":nextProps.searches}),
+        dataSource: this.state.dataSource.cloneWithRowsAndSections(this._getSearchesFromProps(nextProps)),
       });
     }
     if (this.props.sessionsSearched !== nextProps.sessionsSearched) {
@@ -63,6 +63,13 @@ class SearchView extends Component {
         />
       </View>
     );
+  }
+
+  _getSearchesFromProps(props) {
+    const searches = props.searches;
+    if (!searches || searches.length == 0)
+      return {};
+    else return {"Recent":props.searches}
   }
 
   _handleActionSheet(index) {

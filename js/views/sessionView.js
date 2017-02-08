@@ -1,7 +1,11 @@
 import React, { Component } from "react"
 import { StyleSheet, View, Button, Text } from "react-native"
+import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
-import { HeaderBackButton, CardStack } from "react-navigation"
+import { CardStack } from "react-navigation"
+import ToolbarButton from "../components/toolbarButton"
+import * as sessionActions from "../actions/sessionActions"
+import Styles, { Color } from "../styles"
 
 const BackButton = CardStack.Header.BackButton;
 
@@ -40,6 +44,12 @@ class SessionView extends Component {
     console.log(session);
     return (
       <View style={styles.container}>
+        <View style={styles.tools}>
+          <ToolbarButton 
+            name="heart" 
+            color={Color.tint} 
+            onPress={() => this.props.sessionActions.addFavorite(session.id)} />
+        </View>
         <Text style={styles.location}>{session.location}</Text>
         <Text style={styles.title}>{session.title}</Text>
         <Text style={styles.description}>{session.description}</Text>
@@ -72,6 +82,7 @@ function select(state) {
 
 function actions(dispatch) {
     return {
+      sessionActions: bindActionCreators(sessionActions, dispatch)
     }
 }
 

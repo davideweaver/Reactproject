@@ -16,7 +16,7 @@
     "react-native-actionsheet": "^2.0.5",
     "react-native-code-push": "^1.17.0-beta",
     "react-native-vector-icons": "^4.0.0",
-    "react-navigation": "github:react-community/react-navigation",
+    "react-navigation": "1.0.0-beta.2",
     "react-redux": "^5.0.2",
     "redux": "^3.6.0",
     "redux-persist": "^4.3.0",

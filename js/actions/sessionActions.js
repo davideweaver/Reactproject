@@ -44,3 +44,17 @@ export function search(text) {
         })
     }
 }
+
+export function addFavorite(id) {
+  return {
+    type: Types.SESSIONS_ADD_FAVORITE,
+    id: id
+  };
+}
+
+export function removeFavorite(id) {
+  return {
+    type: Types.SESSIONS_REMOVE_FAVORITE,
+    id: id
+  };
+}

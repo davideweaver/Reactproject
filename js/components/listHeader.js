@@ -18,7 +18,7 @@ export default class ListHeader extends Component {
   render() {
 
     const toolbar = <Toolbar>{this.props.children}</Toolbar>
-    const indicator = <ActivityIndicator color="black" style={{backgroundColor:"white",marginBottom:5,marginRight:6}} />
+    const indicator = <ActivityIndicator color={Color.tint} style={{backgroundColor:"white",marginBottom:5,marginRight:8}} />
     const tools = this.props.isLoading ? indicator : toolbar;
 
     return (

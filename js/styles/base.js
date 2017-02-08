@@ -12,5 +12,14 @@ export default {
     },
     container: {
         flex: 1
+    },
+    navbarButtonText: {
+        color: Color.tint,
+        paddingTop: 6,
+        paddingBottom: 4,
+        paddingLeft: 8,
+        paddingRight: 16,
+        fontSize: 16,
+        fontWeight: "500"
     }
 }

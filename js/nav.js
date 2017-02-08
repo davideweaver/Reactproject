@@ -10,7 +10,8 @@ import SessionsView from "./views/sessionsView"
 import AddSessionView from "./views/addSessionView"
 import SessionView from "./views/sessionView"
 import SearchView from "./views/searchView"
-import SpeakersView from "./views/speakersView"
+import FavoritesView from "./views/favoritesView"
+import ProfileView from "./views/profileView"
 import EmptyView from "./views/emptyView"
 
 const FiltersStack = StackNavigator({
@@ -28,7 +29,8 @@ const DiscoverTab = StackNavigator({
 });
 
 const ModalsStack = StackNavigator({
-  AddSession: { screen: AddSessionView }
+  AddSession: { screen: AddSessionView },
+  Profile: { screen: ProfileView }
 }, {
 
 });
@@ -78,13 +80,13 @@ const Tabs = TabNavigator({
       }),
     },
   },
-  SpeakersTab: {
-    screen: SpeakersView,
+  FavoritesTab: {
+    screen: FavoritesView,
     navigationOptions: {
       tabBar: () => ({
-        label: "Speakers",
+        label: "Favorites",
         icon: ({ tintColor, focused }) => (
-          <Icon name={focused ? 'ios-body' : 'ios-body-outline'} size={26} style={focused ? {color: Color.tint} : {color: "#999"}}
+          <Icon name={focused ? 'ios-heart' : 'ios-heart-outline'} size={26} style={focused ? {color: Color.tint} : {color: "#999"}}
           />
         ),
       }),
@@ -103,7 +105,7 @@ const Tabs = TabNavigator({
     },
   },
 }, {
-  initialRouteName: "SearchTab",
+  initialRouteName: "DiscoverTab",
   tabBarPosition: "bottom",
   tabBarOptions: {
       activeTintColor: Color.tint
