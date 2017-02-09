@@ -33,8 +33,9 @@ class SessionsView extends Component {
   render() {
     const {navigate} = this.props.navigation;
 
+    // <ToolbarButton name="add" color={Color.tint} onPress={() => navigate("Modals", {}, "AddSession")} />
+
     var listHeader = (<ListHeader title={"Sessions"} isLoading={this.props.isLoading}>
-      <ToolbarButton name="add" color={Color.tint} onPress={() => navigate("Modals", {}, "AddSession")} />
       <ToolbarButton name="refresh" color={Color.tint} onPress={() => this.props.sessionActions.load()} />
     </ListHeader>)
 
@@ -65,7 +66,7 @@ class SessionsView extends Component {
     };
     let icon = null;
     if (session.isFavorite)
-      icon = <IonIcon name="ios-heart" color={Color.tint} />
+      icon = <IonIcon name="ios-heart" color={Color.tint} size={15} />
     return (
       <TouchableHighlight onPress={onPress} underlayColor="#eee">
         <View style={styles.row}>
@@ -113,7 +114,7 @@ let styles = StyleSheet.create({
   },
   text: {
     flex: 1,
-    fontSize: 16,
+    fontSize: 18,
     paddingRight: 20
   },
   favIconContainer: {

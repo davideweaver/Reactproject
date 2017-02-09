@@ -222,7 +222,7 @@ let styles = StyleSheet.create({
   },
   textResults: {
     flex: 1,
-    fontSize: 16
+    fontSize: 18
   },
   results: {
     backgroundColor: "#eee",

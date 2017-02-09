@@ -5,13 +5,13 @@ import { connect } from "react-redux"
 import * as profileActions from "../actions/profileActions"
 import ToolbarButton from "../components/toolbarButton"
 import ImagePicker from "react-native-image-crop-picker"
-import { Card, TouchableCard, CardGutter, MemoCard } from '../components/cards';
+import { Card, TouchableCard, CardGutter, MemoCard, InstagramPhotosCard } from '../components/cards';
 import Styles, { Color, Dims } from "../styles"
 
 class ProfileView extends Component {
 
   static navigationOptions = {
-    title: "You",
+    title: "Profile",
     header: ({goBack}) => ({
       right: (
         <TouchableOpacity onPress={() => goBack(null)}>
@@ -67,6 +67,9 @@ class ProfileView extends Component {
               <Text style={{color:Color.tint}}>Throw Exception</Text>
             </TouchableOpacity>
           </Card>
+
+          <InstagramPhotosCard profile="davideweaver">
+          </InstagramPhotosCard>
 
           <MemoCard text="hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv ">
           </MemoCard>

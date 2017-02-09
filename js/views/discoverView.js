@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from "react"
-import { StyleSheet, View, ListView, Text, TouchableHighlight } from "react-native"
+import { StyleSheet, View, ListView, Text, TouchableHighlight, TouchableOpacity, Image } from "react-native"
 import ListHeader from "../components/listHeader"
 import { connect } from "react-redux"
+import ToolbarButton from "../components/toolbarButton"
 import Styles, { Color, Dims } from "../styles"
 
 class DiscoverView extends Component {
@@ -22,12 +23,32 @@ class DiscoverView extends Component {
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this._renderRow.bind(this)}
-          renderHeader={() => <ListHeader title={"Discover"}/>}
+          renderHeader={this._renderHeader.bind(this)}
           enableEmptySections={true}
           renderSeparator={this._renderSeparator}
         />
       </View>
     );
+  }
+
+  _renderHeader() {
+    let onPress = () => {
+      this.props.navigation.navigate("Modals", {}, {
+        type: "Navigation/NAVIGATE", 
+        routeName: "Profile"
+      })
+    }
+    let button = <ToolbarButton name="user" color={Color.tint} onPress={onPress} />;
+    if (this.props.profile.image.uri) {
+      button = (<TouchableOpacity onPress={onPress} style={{marginTop:-8}}>
+        <Image style={styles.avatar} source={this.props.profile.image} />
+        </TouchableOpacity>
+      )
+    }
+
+    return (<ListHeader title={"Discover"} isLoading={this.props.isLoading}>
+      {button}
+    </ListHeader>)
   }
 
   _renderRow(rowData, sectionID, rowID, highlightRow) {
@@ -75,17 +96,25 @@ let styles = StyleSheet.create({
     flex: 1,
     fontSize: 22,
     color: "red"
+  },
+  avatar: {
+    width: 40, 
+    height: 40, 
+    resizeMode: "contain", 
+    borderRadius: 20,
+    margin: 0
   }
 })
 
 function select(state) {
-    return {
-    };
+  return {
+    profile: state.profile
+  };
 }
 
 function actions(dispatch) {
-    return {
-    }
+  return {
+  }
 }
 
 export default connect(select, actions)(DiscoverView)

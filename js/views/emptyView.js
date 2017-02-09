@@ -26,10 +26,6 @@ class EmptyView extends Component {
   render() {
     return (
       <View style={styles.container}>
-      <Button
-        onPress={() => this.props.navigation.navigate("SecondFilter")}
-        title="Go to second filter"
-      />
       </View>
     );
   }

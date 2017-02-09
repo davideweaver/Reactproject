@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react"
-import { StyleSheet, View, ListView, Text, TouchableHighlight, TouchableOpacity, Image } from "react-native"
+import { StyleSheet, View, ListView, Text, TouchableHighlight, TouchableOpacity } from "react-native"
 import { bindActionCreators } from "redux"
 import ListHeader from "../components/listHeader"
 import { SwipeListView } from "react-native-swipe-list-view"
@@ -50,22 +50,7 @@ class FavoritesView extends Component {
   }
 
   _renderHeader() {
-    let onPress = () => {
-      this.props.navigation.navigate("Modals", {}, {
-        type: "Navigation/NAVIGATE", 
-        routeName: "Profile"
-      })
-    }
-    let button = <ToolbarButton name="user" color={Color.tint} onPress={onPress} />;
-    if (this.props.profile.image.uri) {
-      button = (<TouchableOpacity onPress={onPress} style={{marginTop:-10}}>
-        <Image style={styles.avatar} source={this.props.profile.image} />
-        </TouchableOpacity>
-      )
-    }
-
     return (<ListHeader title={"Favorites"} isLoading={this.props.isLoading}>
-      {button}
     </ListHeader>)
   }
 
@@ -123,7 +108,7 @@ let styles = StyleSheet.create({
   },
   text: {
     flex: 1,
-    fontSize: 16
+    fontSize: 18
   },
   actionRightBtnText: {
 		color: "#FFF"
@@ -137,22 +122,14 @@ let styles = StyleSheet.create({
 		width: 75,
 		backgroundColor: "red",
 		right: 0
-	},
-  avatar: {
-    width: 40, 
-    height: 40, 
-    resizeMode: "contain", 
-    borderRadius: 20,
-    margin: 0
-  }
+	}
 })
 
 function select(state) {
   return {
     favoriteSessions: state.sessionData.sessions.filter(s => {
       return state.sessionData.favoriteSessionIds.find(id => id == s.id);
-    }),
-    profile: state.profile
+    })
   };
 }
 
