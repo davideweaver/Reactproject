@@ -5,6 +5,7 @@ import { connect } from "react-redux"
 import ListHeader from "../components/listHeader"
 import ToolbarButton from "../components/toolbarButton"
 import * as sessionActions from "../actions/sessionActions"
+import IonIcon from "react-native-vector-icons/Ionicons"
 import Styles, { Color } from "../styles"
 
 class SessionsView extends Component {
@@ -59,20 +60,33 @@ class SessionsView extends Component {
         action: {
           type: "Navigation/NAVIGATE", 
           routeName: "Session", 
-          params: {session: session}
+          params: {id: session.id}
         }});
     };
+    let icon = null;
+    if (session.isFavorite)
+      icon = <IonIcon name="ios-heart" color={Color.tint} />
     return (
       <TouchableHighlight onPress={onPress} underlayColor="#eee">
-        <View>
-          <View style={styles.row}>
-            <Text style={styles.text}>
-              {session.title}
-            </Text>
+        <View style={styles.row}>
+          <Text style={styles.text}>
+            {session.title}
+          </Text>
+          <View style={styles.favIconContainer}>
+            {icon}
           </View>
         </View>
       </TouchableHighlight>
     );
+  }
+
+  _hasRowChanged(sessionOld, sessionNew) {
+    var oldFav = this.props.sessionsSaved.find((s) => s.id == sessionOld.id);
+    var newFav = this.props.sessionsSaved.find((s) => s.id == sessionNew.id);
+    var changed = (sessionOld !== sessionNew || oldFav !== newFav)
+    if (changed)
+      return true;
+    return false;
   }
 
   _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
@@ -94,11 +108,16 @@ let styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     padding: 10,
-    paddingLeft: 20
+    paddingLeft: 20,
+    paddingRight: 20
   },
   text: {
     flex: 1,
-    fontSize: 16
+    fontSize: 16,
+    paddingRight: 20
+  },
+  favIconContainer: {
+  
   }
 })
 

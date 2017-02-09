@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react"
-import { StyleSheet, View, ListView, Text, TouchableHighlight, TouchableOpacity, Alert } from "react-native"
+import { StyleSheet, View, ListView, Text, TouchableHighlight, TouchableOpacity, Image } from "react-native"
 import { bindActionCreators } from "redux"
 import ListHeader from "../components/listHeader"
 import { SwipeListView } from "react-native-swipe-list-view"
@@ -14,31 +14,25 @@ class FavoritesView extends Component {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows(props.favs)
+      dataSource: ds.cloneWithRows(props.favoriteSessions)
     };
   }
   
   componentWillReceiveProps(nextProps) {
-    if (this.props.favs !== nextProps.favs) {
+    if (this.props.favoriteSessions !== nextProps.favoriteSessions) {
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(nextProps.favs),
+        dataSource: this.state.dataSource.cloneWithRows(nextProps.favoriteSessions),
       });
     }
   }
 
   render() {
-    const {navigate} = this.props.navigation;
-
-    var listHeader = (<ListHeader title={"Favorites"} isLoading={this.props.isLoading}>
-      <ToolbarButton name="user" color={Color.tint} onPress={() => navigate("Modals", {}, {type: "Navigation/NAVIGATE", routeName: "Profile"})} />
-    </ListHeader>)
-
     return (
       <View style={Styles.screenTop}>
         <SwipeListView
           dataSource={this.state.dataSource}
           renderRow={this._renderRow.bind(this)}
-          renderHeader={() => listHeader}
+          renderHeader={this._renderHeader.bind(this)}
           enableEmptySections={true}
           renderSeparator={this._renderSeparator}
           renderHiddenRow={(data, secId, rowId, rowMap) => (
@@ -55,6 +49,26 @@ class FavoritesView extends Component {
     );
   }
 
+  _renderHeader() {
+    let onPress = () => {
+      this.props.navigation.navigate("Modals", {}, {
+        type: "Navigation/NAVIGATE", 
+        routeName: "Profile"
+      })
+    }
+    let button = <ToolbarButton name="user" color={Color.tint} onPress={onPress} />;
+    if (this.props.profile.image.uri) {
+      button = (<TouchableOpacity onPress={onPress} style={{marginTop:-3}}>
+        <Image style={styles.avatar} source={this.props.profile.image} />
+        </TouchableOpacity>
+      )
+    }
+
+    return (<ListHeader title={"Favorites"} isLoading={this.props.isLoading}>
+      {button}
+    </ListHeader>)
+  }
+
   _renderRow(session, sectionID, rowID, highlightRow) {
     const {navigate} = this.props.navigation;
     var onPress = () => {
@@ -64,7 +78,7 @@ class FavoritesView extends Component {
         action: {
           type: "Navigation/NAVIGATE", 
           routeName: "Session", 
-          params: {session: session}
+          params: {id: session.id}
         }});
     };
     return (
@@ -123,12 +137,22 @@ let styles = StyleSheet.create({
 		width: 75,
 		backgroundColor: "red",
 		right: 0
-	}
+	},
+  avatar: {
+    width: 30, 
+    height: 30, 
+    resizeMode: "contain", 
+    borderRadius: 15,
+    margin: 0
+  }
 })
 
 function select(state) {
   return {
-    favs: state.sessionData.sessionsSaved
+    favoriteSessions: state.sessionData.sessions.filter(s => {
+      return state.sessionData.favoriteSessionIds.find(id => id == s.id);
+    }),
+    profile: state.profile
   };
 }
 

@@ -53,9 +53,9 @@ export function addFavorite(id) {
 }
 
 export function toggleFavorite(id) {
-  return (dispatch, getState) => {
-    let sessionsSaved = getState().sessionData.sessionsSaved;
-    const exists = sessionsSaved.find(session => session.id == id);
+  return (dispatch, getState) => {  
+    let favoriteSessionIds = getState().sessionData.favoriteSessionIds;
+    const exists = favoriteSessionIds.includes(id);
     if (exists) {
       dispatch({
         type: Types.SESSIONS_REMOVE_FAVORITE,

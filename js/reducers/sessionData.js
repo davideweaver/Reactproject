@@ -4,84 +4,67 @@ const initialState = {
   sessions: [],
   isLoadingSessions: false,
   sessionsSearchResults: [],
-  sessionsSaved: []
+  favoriteSessionIds: []
 };
 
-function fromParseSessions(session) {
-  return {
-    id: session.id,
-    day: session.get('day'),
-    allDay: session.get('allDay'),
-    title: session.get('sessionTitle'),
-    description: session.get('sessionDescription'),
-    hasDetails: session.get('hasDetails'),
-    slug: session.get('sessionSlug'),
-    onMySchedule: session.get('onMySchedule'),
-    tags: session.get('tags') || [],
-    startTime: session.get('startTime') && session.get('startTime').getTime(),
-    endTime: session.get('endTime') && session.get('endTime').getTime(),
-    map: session.get('sessionMap') && session.get('sessionMap').url(),
-    location: session.get('sessionLocation'),
+function fromParseSession(obj, state) {
+  let session = {
+    id: obj.id,
+    day: obj.get('day'),
+    allDay: obj.get('allDay'),
+    title: obj.get('sessionTitle'),
+    description: obj.get('sessionDescription'),
+    hasDetails: obj.get('hasDetails'),
+    slug: obj.get('sessionSlug'),
+    onMySchedule: obj.get('onMySchedule'),
+    tags: obj.get('tags') || [],
+    startTime: obj.get('startTime') && session.get('startTime').getTime(),
+    endTime: obj.get('endTime') && session.get('endTime').getTime(),
+    map: obj.get('sessionMap') && session.get('sessionMap').url(),
+    location: obj.get('sessionLocation'),
   };
+  session.isFavorite = state.favoriteSessionIds.find(id => id == obj.id) !== undefined;
 }
 
 export default function handleActions(state = initialState, action = {}) {
   switch (action.type) {
-    
+
     case Types.SESSIONS_LOAD_START: {
-      return Object.assign({}, state, {
-        isLoadingSessions: true
-      });
+      return {...state, isLoadingSessions: true};
     }
 
     case Types.SESSIONS_LOAD_DONE: {
-      return Object.assign({}, state, {
-        sessions: action.results.map(fromParseSessions), 
-        isLoadingSessions: false
-      });
+      return {...state, isLoadingSessions: false, sessions: action.results.map(s => fromParseSession(s, state))};
     }
 
     case Types.SESSIONS_SEARCH: {
-      return Object.assign({}, state, {
-        sessionsSearchResults: action.results
-      });
+      return {...state, sessionsSearchResults: action.results}
     }
 
     case Types.SESSIONS_SEARCH_CLEAR: {
-      return Object.assign({}, state, {
-        sessionsSearchResults: []
-      });
+      return {...state, sessionsSearchResults: []}
     }
 
     case Types.SESSIONS_ADD_FAVORITE: {
-      const session = state.sessions.filter(session => session.id == action.id)[0];
-      const sessions = state.sessionsSaved.filter(session => session.id != action.id);
-      return Object.assign({}, state, {
-        sessionsSaved: [...sessions, session]
+      var sessions = state.sessions.map(s => {
+        if (s.id !== action.id) 
+          return s;
+        return {...s, isFavorite: true};    
       });
-    }
-
-    case Types.SESSIONS_TOGGLE_FAVORITE: {
-      const session = state.sessions.filter(session => session.id == action.id)[0];
-      const add = state.sessionsSaved.filter(session => session.id == action.id).length == 0;
-      let sessions = [];
-      if (add) {
-        sessions = [...state.sessionsSaved, session]
-      }
-      else {
-        sessions = state.sessionsSaved.filter(session => session.id != action.id);
-      }
-      return Object.assign({}, state, {
-        sessionsSaved: sessions
-      });
+      const favorites = state.favoriteSessionIds.filter(id => id != action.id);
+      return {...state, sessions: sessions, favoriteSessionIds: [...favorites, action.id]}
     }
 
     case Types.SESSIONS_REMOVE_FAVORITE: {
-      const sessions = state.sessionsSaved.filter(session => session.id != action.id);
-      return Object.assign({}, state, {
-        sessionsSaved: sessions
+      var sessions = state.sessions.map(s => {
+        if (s.id !== action.id) 
+          return s;
+        return {...s, isFavorite: false};    
       });
+      const ids = state.favoriteSessionIds.filter(id => id != action.id);
+      return {...state, sessions: [...sessions], favoriteSessionIds: [...ids]}
     }
+    
     default:
       return state;
   }

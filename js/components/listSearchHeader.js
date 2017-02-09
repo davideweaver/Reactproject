@@ -41,11 +41,11 @@ export default class ListSearchHeader extends Component {
 
   render() {
     let marginTop = 0;
-    let marginRight = 0;
+    let marginRight = -75;
     let paddingBottom = 0;
     if (this.state.isSearching) {
       marginTop = -70;
-      marginRight = 65;
+      marginRight = -10;
       paddingBottom = 70;
     }
 
@@ -72,9 +72,8 @@ export default class ListSearchHeader extends Component {
           <TouchableOpacity 
             style={{marginRight: marginRight}}
             onPress={this._onSearchEnd.bind(this)}>
-            <Text 
-              style={styles.cancel}>
-                {btnText}
+            <Text style={styles.cancel}>
+              {btnText}
               </Text>
           </TouchableOpacity>
         </View>
@@ -142,7 +141,7 @@ var styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 3,
     marginLeft: 5,
-    marginRight: -100,
+    //marginRight: -100,
     padding: 10
   },
   border: {

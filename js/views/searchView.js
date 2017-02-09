@@ -137,7 +137,7 @@ class SearchView extends Component {
         action: {
           type: "Navigation/NAVIGATE", 
           routeName: "Session", 
-          params: {session: session}
+          params: {id: session.id}
         }});
     };
     return (
@@ -221,7 +221,8 @@ let styles = StyleSheet.create({
     color: "red"
   },
   textResults: {
-    flex: 1
+    flex: 1,
+    fontSize: 16
   },
   results: {
     backgroundColor: "#eee",

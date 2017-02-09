@@ -43,13 +43,13 @@ let styles = StyleSheet.create({
 })
 
 function select(state) {
-    return {
-    };
+  return {
+  };
 }
 
 function actions(dispatch) {
-    return {
-    }
+  return {
+  }
 }
 
 export default connect(select, actions)(EmptyView)

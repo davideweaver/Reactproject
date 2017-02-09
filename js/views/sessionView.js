@@ -25,14 +25,11 @@ class SessionView extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      session: this.props.navigation.state.params.session
-    };
   }
 
   render() {
-    const session = this.state.session;
-    const favicon = this._isFavorite ? "heart" : "heart-outline";
+    const session = this.props.session;
+    const favicon = session.isFavorite ? "heart" : "heart-outline";
     return (
       <View style={styles.container}>
         <View style={styles.heading}>
@@ -58,11 +55,6 @@ class SessionView extends Component {
         </View>
       );
     });
-  }
-
-  get _isFavorite() {
-    let x = this.props.favs.find((s) => s.id == this.state.session.id);
-    return x;
   }
 }
 
@@ -94,9 +86,9 @@ let styles = StyleSheet.create({
   }
 })
 
-function select(state) {
+function select(state, props) {
   return {
-    favs: state.sessionData.sessionsSaved
+    session: state.sessionData.sessions.find(s => s.id == props.navigation.state.params.id)
   };
 }
 
