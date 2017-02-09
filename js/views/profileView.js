@@ -1,10 +1,11 @@
 import React, { Component } from "react"
-import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native"
+import { StyleSheet, View, Text, TouchableOpacity, Image, ScrollView } from "react-native"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import * as profileActions from "../actions/profileActions"
 import ToolbarButton from "../components/toolbarButton"
 import ImagePicker from "react-native-image-crop-picker"
+import { Card, TouchableCard, CardGutter, MemoCard } from '../components/cards';
 import Styles, { Color, Dims } from "../styles"
 
 class ProfileView extends Component {
@@ -33,13 +34,44 @@ class ProfileView extends Component {
 
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={this._choosePicture.bind(this)}>
-          <Text>Choose Picture</Text>
-        </TouchableOpacity>
-        {avatar}
-        <TouchableOpacity onPress={this._testError.bind(this)}>
-          <Text>Throw Exception</Text>
-        </TouchableOpacity>
+        <ScrollView>
+
+          <CardGutter />
+
+          <TouchableCard grouped={true} onPress={() => {
+              this.props.navigation.navigate("ProfileStack")
+            }}>
+            <View style={styles.profileContainer}>
+              {avatar}
+              <View style={styles.profileInfo}>
+                <Text style={styles.profileName}>David Weaver</Text>
+                <Text style={styles.profileEmail}>dave@markkup.com</Text>
+              </View>
+            </View>
+          </TouchableCard>
+          <Card>
+            <TouchableOpacity onPress={this._choosePicture.bind(this)}>
+              <Text style={{color:Color.tint}}>Choose Picture</Text>
+            </TouchableOpacity>
+          </Card>
+
+          <Card title="Beginning of Card" grouped={true}>
+            <Text>This is just text</Text>
+          </Card>
+          <Card>
+            <Text>This is more text</Text>
+          </Card>
+
+          <Card title="Tests">
+            <TouchableOpacity onPress={this._testError.bind(this)}>
+              <Text style={{color:Color.tint}}>Throw Exception</Text>
+            </TouchableOpacity>
+          </Card>
+
+          <MemoCard text="hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv ">
+          </MemoCard>
+          
+        </ScrollView>
       </View>
     );
   }
@@ -63,13 +95,27 @@ class ProfileView extends Component {
 
 let styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: "rgb(248, 247, 250)"
+  },
+  profileContainer: {
+    flexDirection: "row",
+  },
+  profileInfo: {
+    marginTop: 4,
+    marginLeft: 10
+  },
+  profileName: {
+    fontWeight: "500"
+  },
+  profileEmail: {
+    color: "#777"
   },
   avatar: {
-    width: 40, 
-    height: 40, 
+    width: 50, 
+    height: 50, 
     resizeMode: "contain", 
-    borderRadius: 20
+    borderRadius: 25
   }
 })
 

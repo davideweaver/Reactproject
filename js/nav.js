@@ -12,6 +12,7 @@ import SessionView from "./views/sessionView"
 import SearchView from "./views/searchView"
 import FavoritesView from "./views/favoritesView"
 import ProfileView from "./views/profileView"
+import ProfileEditView from "./views/profileEditView"
 import EmptyView from "./views/emptyView"
 
 const FiltersStack = StackNavigator({
@@ -28,9 +29,16 @@ const DiscoverTab = StackNavigator({
   headerMode: "none",
 });
 
+const ProfileStack = StackNavigator({
+  ProfileEdit: { screen: ProfileEditView }
+}, {
+  headerMode: "none",
+});
+
 const ModalsStack = StackNavigator({
   AddSession: { screen: AddSessionView },
-  Profile: { screen: ProfileView }
+  Profile: { screen: ProfileView },
+  ProfileStack: { screen: ProfileStack }
 }, {
 
 });

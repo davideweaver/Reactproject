@@ -58,7 +58,7 @@ class FavoritesView extends Component {
     }
     let button = <ToolbarButton name="user" color={Color.tint} onPress={onPress} />;
     if (this.props.profile.image.uri) {
-      button = (<TouchableOpacity onPress={onPress} style={{marginTop:-3}}>
+      button = (<TouchableOpacity onPress={onPress} style={{marginTop:-10}}>
         <Image style={styles.avatar} source={this.props.profile.image} />
         </TouchableOpacity>
       )
@@ -139,10 +139,10 @@ let styles = StyleSheet.create({
 		right: 0
 	},
   avatar: {
-    width: 30, 
-    height: 30, 
+    width: 40, 
+    height: 40, 
     resizeMode: "contain", 
-    borderRadius: 15,
+    borderRadius: 20,
     margin: 0
   }
 })
