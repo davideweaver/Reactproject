@@ -53,7 +53,6 @@ class SessionsView extends Component {
   _renderRow(session, sectionID, rowID, highlightRow) {
     const {navigate} = this.props.navigation;
     var onPress = () => {
-      //highlightRow(sectionID, rowID);
       navigate("SessionsTab", {}, {
         type: "Navigation/NAVIGATE", 
         routeName: "SessionStack",
