@@ -52,6 +52,25 @@ export function addFavorite(id) {
   };
 }
 
+export function toggleFavorite(id) {
+  return (dispatch, getState) => {
+    let sessionsSaved = getState().sessionData.sessionsSaved;
+    const exists = sessionsSaved.find(session => session.id == id);
+    if (exists) {
+      dispatch({
+        type: Types.SESSIONS_REMOVE_FAVORITE,
+        id: id
+      })
+    }
+    else {
+      dispatch({
+        type: Types.SESSIONS_ADD_FAVORITE,
+        id: id
+      })
+    }
+  };
+}
+
 export function removeFavorite(id) {
   return {
     type: Types.SESSIONS_REMOVE_FAVORITE,

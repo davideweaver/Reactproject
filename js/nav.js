@@ -48,6 +48,13 @@ const SessionsTab = StackNavigator({
   headerMode: "none"
 });
 
+const FavoritesTab = StackNavigator({
+  Sessions: { screen: FavoritesView },
+  SessionStack: { screen: SessionStack }
+}, {
+  headerMode: "none"
+});
+
 const SearchTab = StackNavigator({
   SearchView: { screen: SearchView },
   SessionStack: { screen: SessionStack }
@@ -81,7 +88,7 @@ const Tabs = TabNavigator({
     },
   },
   FavoritesTab: {
-    screen: FavoritesView,
+    screen: FavoritesTab,
     navigationOptions: {
       tabBar: () => ({
         label: "Favorites",

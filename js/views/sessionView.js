@@ -25,7 +25,29 @@ class SessionView extends Component {
 
   constructor(props) {
     super(props);
-    
+    this.state = {
+      session: this.props.navigation.state.params.session
+    };
+  }
+
+  render() {
+    const session = this.state.session;
+    const favicon = this._isFavorite ? "heart" : "heart-outline";
+    return (
+      <View style={styles.container}>
+        <View style={styles.heading}>
+          <Text style={styles.title}>{session.title}</Text>
+          <ToolbarButton 
+            style={styles.favButton}
+            name={favicon} 
+            color={Color.tint} 
+            onPress={() => this.props.sessionActions.toggleFavorite(session.id)} />
+        </View>
+        <Text style={styles.description}>{session.description}</Text>
+        <Text style={styles.location}>{session.location}</Text>
+        { this._renderTags(session.tags) }
+      </View>
+    );
   }
 
   _renderTags(tags) {
@@ -38,24 +60,9 @@ class SessionView extends Component {
     });
   }
 
-  render() {
-    const { state } = this.props.navigation;
-    const session = state.params.session;
-    console.log(session);
-    return (
-      <View style={styles.container}>
-        <View style={styles.tools}>
-          <ToolbarButton 
-            name="heart" 
-            color={Color.tint} 
-            onPress={() => this.props.sessionActions.addFavorite(session.id)} />
-        </View>
-        <Text style={styles.location}>{session.location}</Text>
-        <Text style={styles.title}>{session.title}</Text>
-        <Text style={styles.description}>{session.description}</Text>
-        { this._renderTags(session.tags) }
-      </View>
-    );
+  get _isFavorite() {
+    let x = this.props.favs.find((s) => s.id == this.state.session.id);
+    return x;
   }
 }
 
@@ -63,27 +70,40 @@ let styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    padding: 10
+    padding: 15
   },
   location: {
     marginBottom: 10
   },
+  heading: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    marginBottom: 10
+  },
   title: {
+    flex: 1,
     fontWeight: "bold",
+    marginTop: 6,
+    marginBottom: 10
+  },
+  favButton: {
+    flex: 1
+  },
+  description: {
     marginBottom: 10
   }
 })
 
 function select(state) {
-    return {
-      //session: state.params.session
-    };
+  return {
+    favs: state.sessionData.sessionsSaved
+  };
 }
 
 function actions(dispatch) {
-    return {
-      sessionActions: bindActionCreators(sessionActions, dispatch)
-    }
+  return {
+    sessionActions: bindActionCreators(sessionActions, dispatch)
+  }
 }
 
 export default connect(select, actions)(SessionView)

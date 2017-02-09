@@ -27,17 +27,61 @@ function fromParseSessions(session) {
 
 export default function handleActions(state = initialState, action = {}) {
   switch (action.type) {
-    case Types.SESSIONS_LOAD_START:
-      return {...state, isLoadingSessions: true};
-    case Types.SESSIONS_LOAD_DONE:
-      return {...state, sessions: action.results.map(fromParseSessions), isLoadingSessions: false};
-    case Types.SESSIONS_SEARCH:
-      return {...state, sessionsSearchResults: action.results};
-    case Types.SESSIONS_SEARCH_CLEAR:
-      return {...state, sessionsSearchResults: []};
-    case Types.SESSIONS_ADD_FAVORITE:
+    
+    case Types.SESSIONS_LOAD_START: {
+      return Object.assign({}, state, {
+        isLoadingSessions: true
+      });
+    }
+
+    case Types.SESSIONS_LOAD_DONE: {
+      return Object.assign({}, state, {
+        sessions: action.results.map(fromParseSessions), 
+        isLoadingSessions: false
+      });
+    }
+
+    case Types.SESSIONS_SEARCH: {
+      return Object.assign({}, state, {
+        sessionsSearchResults: action.results
+      });
+    }
+
+    case Types.SESSIONS_SEARCH_CLEAR: {
+      return Object.assign({}, state, {
+        sessionsSearchResults: []
+      });
+    }
+
+    case Types.SESSIONS_ADD_FAVORITE: {
       const session = state.sessions.filter(session => session.id == action.id)[0];
-      return {...state, sessionsSaved: [...state.sessionsSaved, session]};
+      const sessions = state.sessionsSaved.filter(session => session.id != action.id);
+      return Object.assign({}, state, {
+        sessionsSaved: [...sessions, session]
+      });
+    }
+
+    case Types.SESSIONS_TOGGLE_FAVORITE: {
+      const session = state.sessions.filter(session => session.id == action.id)[0];
+      const add = state.sessionsSaved.filter(session => session.id == action.id).length == 0;
+      let sessions = [];
+      if (add) {
+        sessions = [...state.sessionsSaved, session]
+      }
+      else {
+        sessions = state.sessionsSaved.filter(session => session.id != action.id);
+      }
+      return Object.assign({}, state, {
+        sessionsSaved: sessions
+      });
+    }
+
+    case Types.SESSIONS_REMOVE_FAVORITE: {
+      const sessions = state.sessionsSaved.filter(session => session.id != action.id);
+      return Object.assign({}, state, {
+        sessionsSaved: sessions
+      });
+    }
     default:
       return state;
   }

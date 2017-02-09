@@ -99,6 +99,7 @@ let styles = StyleSheet.create({
   },
   text: {
     flex: 1,
+    fontSize: 16
   }
 })
 

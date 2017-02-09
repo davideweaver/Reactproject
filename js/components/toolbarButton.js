@@ -22,6 +22,14 @@ export default class ToolbarButton extends Component {
         icon = (<EvilIcon name="close" size={30} color={this.props.color} style={{marginTop:-0}} />);
         break;
       }
+      case "heart": {
+        icon = (<IonIcon name="ios-heart" size={30} color={this.props.color} style={{marginTop:-0}} />);
+        break;
+      }
+      case "heart-outline": {
+        icon = (<IonIcon name="ios-heart-outline" size={30} color={this.props.color} style={{marginTop:-0}} />);
+        break;
+      }
       default: {
         icon = (<SimpleLineIcon name={this.props.name} size={20} color={this.props.color} style={styles.icon} />);
         break;

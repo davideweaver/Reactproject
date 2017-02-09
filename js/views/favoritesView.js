@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from "react"
-import { StyleSheet, View, ListView, Text, TouchableHighlight } from "react-native"
+import { StyleSheet, View, ListView, Text, TouchableHighlight, TouchableOpacity, Alert } from "react-native"
+import { bindActionCreators } from "redux"
 import ListHeader from "../components/listHeader"
+import { SwipeListView } from "react-native-swipe-list-view"
 import { connect } from "react-redux"
 import ToolbarButton from "../components/toolbarButton"
+import * as sessionActions from "../actions/sessionActions"
 import Styles, { Color } from "../styles"
 
 class FavoritesView extends Component {
@@ -32,12 +35,21 @@ class FavoritesView extends Component {
 
     return (
       <View style={Styles.screenTop}>
-        <ListView
+        <SwipeListView
           dataSource={this.state.dataSource}
           renderRow={this._renderRow.bind(this)}
           renderHeader={() => listHeader}
           enableEmptySections={true}
           renderSeparator={this._renderSeparator}
+          renderHiddenRow={(data, secId, rowId, rowMap) => (
+            <TouchableOpacity 
+              style={styles.actionRightBtn} 
+              onPress={() => this._handleActionClick(data, secId, rowId, rowMap)}>
+              <Text style={styles.actionRightBtnText}>Delete</Text>
+            </TouchableOpacity>
+          )}
+          disableRightSwipe={true}
+          rightOpenValue={-75}
         />
       </View>
     );
@@ -46,8 +58,14 @@ class FavoritesView extends Component {
   _renderRow(session, sectionID, rowID, highlightRow) {
     const {navigate} = this.props.navigation;
     var onPress = () => {
-      highlightRow(sectionID, rowID);
-      navigate("FiltersStack");
+      navigate("FavoritesTab", {}, {
+        type: "Navigation/NAVIGATE", 
+        routeName: "SessionStack",
+        action: {
+          type: "Navigation/NAVIGATE", 
+          routeName: "Session", 
+          params: {session: session}
+        }});
     };
     return (
       <TouchableHighlight onPress={onPress} underlayColor="#eee">
@@ -74,6 +92,11 @@ class FavoritesView extends Component {
       />
     );
   }
+
+  _handleActionClick(data, secId, rowId, rowMap) {
+    rowMap[`${secId}${rowId}`].closeRow();
+    this.props.sessionActions.removeFavorite(data.id);
+  }
 }
 
 let styles = StyleSheet.create({
@@ -81,11 +104,26 @@ let styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     padding: 10,
-    paddingLeft: 20
+    paddingLeft: 20,
+    backgroundColor: "white"
   },
   text: {
-    flex: 1
-  }
+    flex: 1,
+    fontSize: 16
+  },
+  actionRightBtnText: {
+		color: "#FFF"
+	},
+  actionRightBtn: {
+		alignItems: "center",
+		bottom: 0,
+		justifyContent: "center",
+		position: "absolute",
+		top: 0,
+		width: 75,
+		backgroundColor: "red",
+		right: 0
+	}
 })
 
 function select(state) {
@@ -96,6 +134,7 @@ function select(state) {
 
 function actions(dispatch) {
   return {
+    sessionActions: bindActionCreators(sessionActions, dispatch)
   }
 }
 
