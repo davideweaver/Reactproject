@@ -7,17 +7,23 @@ PODS:
     - MobileCenter/MobileCenter
   - MobileCenter/MobileCenterCrashes (0.3.7):
     - MobileCenter/MobileCenter
+  - QBImagePickerController (3.4.0)
   - RNMobileCenter (0.1.0):
     - MobileCenter (~> 0.3.0)
+  - RSKImageCropper (1.5.2)
 
 DEPENDENCIES:
   - MobileCenter (~> 0.3.0)
+  - QBImagePickerController
   - RNMobileCenter (~> 0.1.0)
+  - RSKImageCropper
 
 SPEC CHECKSUMS:
   MobileCenter: cb53869e883407fe59f9ba05c9a4f9c9695e1411
+  QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   RNMobileCenter: 8ca8a27e2921a425196173e621751ccf2c406518
+  RSKImageCropper: 27d0e7efa800b509720163c3561fe08a04853780
 
-PODFILE CHECKSUM: 4665f16b574227bdbae0104e8d68d1b738665108
+PODFILE CHECKSUM: efa3adcb944a5b47126cc815b720c1700b9058cc
 
 COCOAPODS: 1.2.0
