@@ -15,7 +15,8 @@ class EmptyView extends Component {
           onPress={() => goBack(null)}
           title="Discover"
           />
-        )
+        ),
+        style: {backgroundColor: "white"}
     })
   }
 

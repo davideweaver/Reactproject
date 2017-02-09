@@ -13,6 +13,10 @@ export default {
     container: {
         flex: 1
     },
+    cardContainer: {
+        flex: 1,
+        backgroundColor: "rgb(248, 247, 250)",
+    },
     navbarButtonText: {
         color: Color.tint,
         paddingTop: 6,

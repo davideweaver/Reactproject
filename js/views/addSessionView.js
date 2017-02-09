@@ -13,7 +13,8 @@ class AddSessionView extends Component {
             name="close"
             onPress={() => goBack(null)}
           />
-        )
+        ),
+        style: {backgroundColor: "white"}
     })
   }
 

@@ -5,6 +5,7 @@ import { connect } from "react-redux"
 import { CardStack } from "react-navigation"
 import ToolbarButton from "../components/toolbarButton"
 import * as sessionActions from "../actions/sessionActions"
+import { Card, TouchableCard, CardGutter, MemoCard, InstagramPhotosCard } from '../components/cards';
 import Styles, { Color } from "../styles"
 
 const BackButton = CardStack.Header.BackButton;
@@ -19,7 +20,8 @@ class SessionView extends Component {
           onPress={() => goBack(null)}
           title="All"
           />
-        )
+        ),
+        style: {backgroundColor: "white"}
     })
   }
 
@@ -31,7 +33,7 @@ class SessionView extends Component {
     const session = this.props.session;
     const favicon = session.isFavorite ? "heart" : "heart-outline";
     return (
-      <View style={styles.container}>
+      <View style={Styles.cardContainer}>
         <View style={styles.heading}>
           <Text style={styles.title}>{session.title}</Text>
           <ToolbarButton 
@@ -40,9 +42,13 @@ class SessionView extends Component {
             color={Color.tint} 
             onPress={() => this.props.sessionActions.toggleFavorite(session.id)} />
         </View>
-        <Text style={styles.description}>{session.description}</Text>
-        <Text style={styles.location}>{session.location}</Text>
-        { this._renderTags(session.tags) }
+        <MemoCard title="Description" text={session.description} />
+        <Card grouped={true}>
+          <Text>{session.location}</Text>
+        </Card>
+        <Card>
+          { this._renderTags(session.tags) }
+        </Card>
       </View>
     );
   }
@@ -59,24 +65,16 @@ class SessionView extends Component {
 }
 
 let styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    padding: 15
-  },
-  location: {
-    marginBottom: 10
-  },
   heading: {
     flexDirection: "row",
     justifyContent: "flex-start",
-    marginBottom: 10
+    padding: 10
   },
   title: {
     flex: 1,
     fontWeight: "bold",
     marginTop: 6,
-    marginBottom: 10
+    fontSize: 18
   },
   favButton: {
     flex: 1

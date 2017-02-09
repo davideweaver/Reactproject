@@ -15,7 +15,8 @@ class ProfileEditView extends Component {
           onPress={() => goBack(null)}
           title="Profile"
           />
-        )
+        ),
+        style: {backgroundColor: "white"}
     })
   }
 

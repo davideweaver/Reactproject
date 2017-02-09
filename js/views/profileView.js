@@ -17,7 +17,8 @@ class ProfileView extends Component {
         <TouchableOpacity onPress={() => goBack(null)}>
           <Text style={Styles.navbarButtonText}>Done</Text>
         </TouchableOpacity>
-        )
+        ),
+        style: {backgroundColor: "white"}
     })
   }
 
