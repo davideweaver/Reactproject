@@ -18,12 +18,13 @@ function fromParseSession(obj, state) {
     slug: obj.get('sessionSlug'),
     onMySchedule: obj.get('onMySchedule'),
     tags: obj.get('tags') || [],
-    startTime: obj.get('startTime') && session.get('startTime').getTime(),
-    endTime: obj.get('endTime') && session.get('endTime').getTime(),
-    map: obj.get('sessionMap') && session.get('sessionMap').url(),
+    startTime: obj.get('startTime') && obj.get('startTime').getTime(),
+    endTime: obj.get('endTime') && obj.get('endTime').getTime(),
+    map: obj.get('sessionMap') && obj.get('sessionMap').url(),
     location: obj.get('sessionLocation'),
   };
   session.isFavorite = state.favoriteSessionIds.find(id => id == obj.id) !== undefined;
+  return session;
 }
 
 export default function handleActions(state = initialState, action = {}) {
