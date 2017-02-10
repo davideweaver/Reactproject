@@ -40,13 +40,13 @@ const ModalsStack = StackNavigator({
   Profile: { screen: ProfileView },
   ProfileStack: { screen: ProfileStack }
 }, {
-
+  //initialRouteName: "Profile",
 });
 
 const SessionStack = StackNavigator({
   Session: { screen: SessionView }
 }, {
-    headerMode: "float",
+  headerMode: "float",
 });
 
 const SessionsTab = StackNavigator({

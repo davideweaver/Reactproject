@@ -1,20 +1,49 @@
 import React, { Component, PropTypes } from "react"
 import { StyleSheet, View, Text, TouchableHighlight, ActivityIndicator, ScrollView, TouchableWithoutFeedback, Image } from "react-native"
-import { RegularText, BoldText } from "./styledText"
+import { RegularText, BoldText, SmallText } from "./styledText"
 import ReadMore from "./readMore"
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import Styles, { Color, Dims } from "../styles"
 
-export class Card extends Component {
-
+export class CardGroup extends Component {
   static propTypes = {
-    title: PropTypes.string,
-    grouped: PropTypes.bool
+    title: PropTypes.string
   }
 
   static defaultProps = {
-    title: null,
-    grouped: false,
+    title: null
+  }
+
+  render() {
+    let header = null;
+    if (this.props.title) {
+        header = (<View style={styles.cardLabel}>
+          <SmallText style={styles.cardLabelText}>
+            {this.props.title.toUpperCase()}
+          </SmallText>
+        </View>)
+    }
+    else {
+      header = (<CardGutter />)
+    }
+    return (
+      <View>
+        {header}
+        <View style={[styles.cardGroup, this.props.style]}>
+          {this.props.children}
+        </View>
+        <View style={styles.cardBorder} />
+      </View>
+    );
+  }
+}
+
+export class Card extends Component {
+
+  static propTypes = {
+  }
+
+  static defaultProps = {
     style: {}
   }
 
@@ -23,30 +52,18 @@ export class Card extends Component {
   }
 
   render() {
-    let header = null;
-    if (this.props.title) {
-        header = (<View style={styles.cardLabel}>
-          <BoldText style={styles.cardLabelText}>
-            {this.props.title}
-          </BoldText>
-        </View>)
-    }
     let contents = (<RegularText style={{color: this.props.tint}}>{this.props.text}</RegularText>);
     if (this.props.children)
       contents = this.props.children;
     let border = <View style={styles.cardBorder} />;
-    let topBorder = border;
-    let bottomBorder = this.props.grouped ? null : border;
     return (
       <View ref={"card"}>
-        {header}
-        {topBorder}
+        {border}
         <View style={[styles.card, this.props.style]}>
           <View style={styles.cardBody}>
             {contents}
           </View>
         </View>
-        {bottomBorder}
       </View>
     );
   }
@@ -119,9 +136,9 @@ export class MemoCard extends Component {
             numberOfLines={6}
             renderTruncatedFooter={this._renderTruncatedFooter}
             renderRevealedFooter={this._renderRevealedFooter}>
-            <RegularText style={styles.cardText}>
+            <SmallText style={styles.cardText}>
             {text}
-            </RegularText>
+            </SmallText>
         </ReadMore>
       </Card>
     );
@@ -247,8 +264,8 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
   },
   cardLabelText: {
-    fontSize: 15,
-    color: '#313131',
+    color: '#6D6D72',
+    fontSize: 8
   },
   cardAction: {
     paddingVertical: 8,

@@ -5,7 +5,7 @@ import { connect } from "react-redux"
 import * as profileActions from "../actions/profileActions"
 import ToolbarButton from "../components/toolbarButton"
 import ImagePicker from "react-native-image-crop-picker"
-import { Card, TouchableCard, CardGutter, MemoCard, InstagramPhotosCard } from '../components/cards';
+import { Card, CardGroup, TouchableCard, CardGutter, MemoCard, InstagramPhotosCard } from '../components/cards';
 import Styles, { Color, Dims, TextSize } from "../styles"
 
 class ProfileView extends Component {
@@ -29,36 +29,47 @@ class ProfileView extends Component {
   }
 
   render() {
+    const profile = this.props.profile;
+
     let avatar = null;
-    if (this.props.avatar.uri)
-      avatar = (<Image style={styles.avatar} source={this.props.avatar} />)
+    if (profile.avatar.uri)
+      avatar = (<Image style={styles.avatar} source={profile.avatar} />)
 
     return (
-      <View style={styles.container}>
+      <View style={Styles.cardContainer}>
         <ScrollView>
+
+          <CardGroup>
+            <TouchableCard grouped={true} onPress={() => {
+                this.props.navigation.navigate("ProfileStack")
+              }} accessory={true}>
+              <View style={styles.profileContainer}>
+                {avatar}
+                <View style={styles.profileInfo}>
+                  <Text style={styles.profileName}>{profile.firstName} {profile.lastName}</Text>
+                  <Text style={styles.profileEmail}>{profile.email}</Text>
+                </View>
+              </View>
+            </TouchableCard>
+            <TouchableCard onPress={this._choosePicture.bind(this)} text="Choose Picture" />
+          </CardGroup>
+
+          <CardGroup title="Bio">
+            <MemoCard text={profile.bio}>
+            </MemoCard>
+          </CardGroup>
+
+          <CardGroup title="Instagram">
+            <InstagramPhotosCard profile="davideweaver" />
+            <Card text={profile.instagramUsername} />
+          </CardGroup>
+
+          <CardGroup title="Tests">
+            <TouchableCard onPress={this._testError.bind(this)} text="Throw Exception" />
+          </CardGroup>
 
           <CardGutter />
 
-          <TouchableCard grouped={true} onPress={() => {
-              this.props.navigation.navigate("ProfileStack")
-            }} accessory={true}>
-            <View style={styles.profileContainer}>
-              {avatar}
-              <View style={styles.profileInfo}>
-                <Text style={styles.profileName}>David Weaver</Text>
-                <Text style={styles.profileEmail}>dave@markkup.com</Text>
-              </View>
-            </View>
-          </TouchableCard>
-          <TouchableCard onPress={this._choosePicture.bind(this)} text="Choose Picture" />
-
-          <TouchableCard title="Tests" onPress={this._testError.bind(this)} text="Throw Exception" />
-
-          <InstagramPhotosCard title="Photos from Instagram" profile="davideweaver" />
-
-          <MemoCard title="Random Text to Consider" text="hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv ">
-          </MemoCard>
-          
         </ScrollView>
       </View>
     );
@@ -76,7 +87,7 @@ class ProfileView extends Component {
       cropperCircleOverlay: true,
       includeBase64: true
     }).then(image => {
-      this.props.profileActions.saveImage(`data:${image.mime};base64,`+ image.data, image.width, image.height);
+      this.props.profileActions.saveAvatar(`data:${image.mime};base64,`+ image.data, image.width, image.height);
     });
   }
 }
@@ -112,7 +123,7 @@ let styles = StyleSheet.create({
 
 function select(state) {
   return {
-    avatar: state.profile.image
+    profile: state.profile
   };
 }
 

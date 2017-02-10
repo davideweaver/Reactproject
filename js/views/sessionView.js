@@ -6,7 +6,7 @@ import { CardStack } from "react-navigation"
 import MapView from "react-native-maps"
 import ToolbarButton from "../components/toolbarButton"
 import * as sessionActions from "../actions/sessionActions"
-import { Card, TouchableCard, CardGutter, MemoCard, InstagramPhotosCard } from '../components/cards';
+import { Card, CardGroup, TouchableCard, CardGutter, MemoCard, InstagramPhotosCard } from '../components/cards';
 import Styles, { Color, TextSize } from "../styles"
 
 const BackButton = CardStack.Header.BackButton;
@@ -37,6 +37,7 @@ class SessionView extends Component {
     return (
       <View style={Styles.cardContainer}>
         <ScrollView>
+
           <View style={styles.heading}>
             <Text style={styles.title}>{session.title}</Text>
             <ToolbarButton 
@@ -45,32 +46,40 @@ class SessionView extends Component {
               color={Color.tint} 
               onPress={() => this.props.sessionActions.toggleFavorite(session.id)} />
           </View>
-          <MemoCard title="Description" text={session.description} />
-          <CardGutter />
-          <Card grouped={true} text={location} />
-          <Card>
-            {this._renderTags(session.tags)}
-          </Card>
-          <CardGutter />
-          <Card style={styles.mapContainer}>
-            <MapView style={styles.map}
-              initialRegion={{
-              latitude: 40.053275,
-              longitude: -76.300251,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}>
-              <MapView.Marker
-                coordinate={{latitude: 40.053275, longitude: -76.300251}}
-                title={location}
-                description={session.title}
-              />
-            </MapView>
-          </Card>
-          <TouchableCard 
-            text="Open in Maps" 
-            accessory={true}
-            onPress={this._handleOpenInMaps.bind(this)} />
+
+          <CardGroup>
+            <MemoCard title="Description" text={session.description} />
+          </CardGroup>
+
+          <CardGroup title="Details">
+            <Card text={location} />
+            <Card>
+              {this._renderTags(session.tags)}
+            </Card>
+          </CardGroup>
+
+          <CardGroup title="Map">
+            <Card style={styles.mapContainer}>
+              <MapView style={styles.map}
+                initialRegion={{
+                latitude: 40.053275,
+                longitude: -76.300251,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}>
+                <MapView.Marker
+                  coordinate={{latitude: 40.053275, longitude: -76.300251}}
+                  title={location}
+                  description={session.title}
+                />
+              </MapView>
+            </Card>
+            <TouchableCard 
+              text="Open in Maps" 
+              accessory={true}
+              onPress={this._handleOpenInMaps.bind(this)} />
+          </CardGroup>
+
         </ScrollView>
       </View>
     );

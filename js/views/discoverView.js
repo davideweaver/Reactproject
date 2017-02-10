@@ -39,9 +39,9 @@ class DiscoverView extends Component {
       })
     }
     let button = <ToolbarButton name="user" color={Color.tint} onPress={onPress} />;
-    if (this.props.profile.image.uri) {
+    if (this.props.profile.avatar.uri) {
       button = (<TouchableOpacity onPress={onPress} style={{marginTop:-8}}>
-        <Image style={styles.avatar} source={this.props.profile.image} />
+        <Image style={styles.avatar} source={this.props.profile.avatar} />
         </TouchableOpacity>
       )
     }
