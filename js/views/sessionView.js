@@ -1,12 +1,13 @@
 import React, { Component } from "react"
-import { StyleSheet, View, Button, Text } from "react-native"
+import { StyleSheet, View, Button, Text, ScrollView, Platform, Linking } from "react-native"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import { CardStack } from "react-navigation"
+import MapView from "react-native-maps"
 import ToolbarButton from "../components/toolbarButton"
 import * as sessionActions from "../actions/sessionActions"
 import { Card, TouchableCard, CardGutter, MemoCard, InstagramPhotosCard } from '../components/cards';
-import Styles, { Color } from "../styles"
+import Styles, { Color, TextSize } from "../styles"
 
 const BackButton = CardStack.Header.BackButton;
 
@@ -32,23 +33,45 @@ class SessionView extends Component {
   render() {
     const session = this.props.session;
     const favicon = session.isFavorite ? "heart" : "heart-outline";
+    const location = `${session.location} Building`
     return (
       <View style={Styles.cardContainer}>
-        <View style={styles.heading}>
-          <Text style={styles.title}>{session.title}</Text>
-          <ToolbarButton 
-            style={styles.favButton}
-            name={favicon} 
-            color={Color.tint} 
-            onPress={() => this.props.sessionActions.toggleFavorite(session.id)} />
-        </View>
-        <MemoCard title="Description" text={session.description} />
-        <Card grouped={true}>
-          <Text>{session.location}</Text>
-        </Card>
-        <Card>
-          { this._renderTags(session.tags) }
-        </Card>
+        <ScrollView>
+          <View style={styles.heading}>
+            <Text style={styles.title}>{session.title}</Text>
+            <ToolbarButton 
+              style={styles.favButton}
+              name={favicon} 
+              color={Color.tint} 
+              onPress={() => this.props.sessionActions.toggleFavorite(session.id)} />
+          </View>
+          <MemoCard title="Description" text={session.description} />
+          <CardGutter />
+          <Card grouped={true} text={location} />
+          <Card>
+            {this._renderTags(session.tags)}
+          </Card>
+          <CardGutter />
+          <Card style={styles.mapContainer}>
+            <MapView style={styles.map}
+              initialRegion={{
+              latitude: 40.053275,
+              longitude: -76.300251,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}>
+              <MapView.Marker
+                coordinate={{latitude: 40.053275, longitude: -76.300251}}
+                title={location}
+                description={session.title}
+              />
+            </MapView>
+          </Card>
+          <TouchableCard 
+            text="Open in Maps" 
+            accessory={true}
+            onPress={this._handleOpenInMaps.bind(this)} />
+        </ScrollView>
       </View>
     );
   }
@@ -57,10 +80,24 @@ class SessionView extends Component {
     return tags.map(function(tag, i){
       return(
         <View key={i}>
-          <Text>{tag}</Text>
+          <Text style={styles.tag}>{tag}</Text>
         </View>
       );
     });
+  }
+
+  _handleOpenInMaps = () => {
+    let address = "355 East Liberty Street"
+    let postalCode = "17602"
+    let city = "Lancaster"
+
+    let daddr = encodeURIComponent(`${address} ${postalCode}, ${city}`);
+
+    if (Platform.OS === 'ios') {
+      Linking.openURL(`http://maps.apple.com/?daddr=${daddr}`);
+    } else {
+      Linking.openURL(`http://maps.google.com/?daddr=${daddr}`);
+    }
   }
 }
 
@@ -81,6 +118,19 @@ let styles = StyleSheet.create({
   },
   description: {
     marginBottom: 10
+  },
+  tag: {
+    fontSize: TextSize.normal
+  },
+  mapContainer: {
+    height: 150
+  },
+  map: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 150,
   }
 })
 

@@ -6,7 +6,7 @@ import * as profileActions from "../actions/profileActions"
 import ToolbarButton from "../components/toolbarButton"
 import ImagePicker from "react-native-image-crop-picker"
 import { Card, TouchableCard, CardGutter, MemoCard, InstagramPhotosCard } from '../components/cards';
-import Styles, { Color, Dims } from "../styles"
+import Styles, { Color, Dims, TextSize } from "../styles"
 
 class ProfileView extends Component {
 
@@ -41,7 +41,7 @@ class ProfileView extends Component {
 
           <TouchableCard grouped={true} onPress={() => {
               this.props.navigation.navigate("ProfileStack")
-            }}>
+            }} accessory={true}>
             <View style={styles.profileContainer}>
               {avatar}
               <View style={styles.profileInfo}>
@@ -50,29 +50,13 @@ class ProfileView extends Component {
               </View>
             </View>
           </TouchableCard>
-          <Card>
-            <TouchableOpacity onPress={this._choosePicture.bind(this)}>
-              <Text style={{color:Color.tint}}>Choose Picture</Text>
-            </TouchableOpacity>
-          </Card>
+          <TouchableCard onPress={this._choosePicture.bind(this)} text="Choose Picture" />
 
-          <Card title="Beginning of Card" grouped={true}>
-            <Text>This is just text</Text>
-          </Card>
-          <Card>
-            <Text>This is more text</Text>
-          </Card>
+          <TouchableCard title="Tests" onPress={this._testError.bind(this)} text="Throw Exception" />
 
-          <Card title="Tests">
-            <TouchableOpacity onPress={this._testError.bind(this)}>
-              <Text style={{color:Color.tint}}>Throw Exception</Text>
-            </TouchableOpacity>
-          </Card>
+          <InstagramPhotosCard title="Photos from Instagram" profile="davideweaver" />
 
-          <InstagramPhotosCard profile="davideweaver">
-          </InstagramPhotosCard>
-
-          <MemoCard text="hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv ">
+          <MemoCard title="Random Text to Consider" text="hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv hshl kdjgh cnjkd flgh jkfhgl ckjsdfhg ksdhfg csdfgdfhsjghskdfjgv kjdfgv kjsdgv ">
           </MemoCard>
           
         </ScrollView>
@@ -104,16 +88,19 @@ let styles = StyleSheet.create({
   },
   profileContainer: {
     flexDirection: "row",
+    marginTop: 2
   },
   profileInfo: {
     marginTop: 4,
     marginLeft: 10
   },
   profileName: {
-    fontWeight: "500"
+    fontWeight: "500",
+    fontSize: TextSize.normal
   },
   profileEmail: {
-    color: "#777"
+    color: "#777",
+    fontSize: TextSize.small
   },
   avatar: {
     width: 50, 

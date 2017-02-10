@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from "react"
 import { StyleSheet, View, Text, TouchableHighlight, ActivityIndicator, ScrollView, TouchableWithoutFeedback, Image } from "react-native"
 import { RegularText, BoldText } from "./styledText"
 import ReadMore from "./readMore"
-import Styles, { Color } from "../styles"
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
+import Styles, { Color, Dims } from "../styles"
 
 export class Card extends Component {
 
@@ -13,7 +14,8 @@ export class Card extends Component {
 
   static defaultProps = {
     title: null,
-    grouped: false
+    grouped: false,
+    style: {}
   }
 
   setNativeProps(props) {
@@ -29,6 +31,9 @@ export class Card extends Component {
           </BoldText>
         </View>)
     }
+    let contents = (<RegularText style={{color: this.props.tint}}>{this.props.text}</RegularText>);
+    if (this.props.children)
+      contents = this.props.children;
     let border = <View style={styles.cardBorder} />;
     let topBorder = border;
     let bottomBorder = this.props.grouped ? null : border;
@@ -36,9 +41,9 @@ export class Card extends Component {
       <View ref={"card"}>
         {header}
         {topBorder}
-        <View style={styles.card}>
+        <View style={[styles.card, this.props.style]}>
           <View style={styles.cardBody}>
-            {this.props.children}
+            {contents}
           </View>
         </View>
         {bottomBorder}
@@ -69,19 +74,36 @@ export class TouchableCard extends Component {
 
   static propTypes = {
     ...Card.propTypes,
-    onPress: PropTypes.func
+    onPress: PropTypes.func,
+    tint: PropTypes.string,
+    accessory: PropTypes.bool
   }
 
   static defaultProps = {
     ...Card.defaultProps,
-    onPress: () => {}
+    onPress: () => {},
+    tint: Color.tint,
+    accessory: false
   }
 
   render() {
+    let contents = (<RegularText style={{color: this.props.tint}}>{this.props.text}</RegularText>);
+    if (this.props.children)
+      contents = this.props.children;
+    let accessory = (<SimpleLineIcons name="arrow-right" size={12} color="#999" />);
+    if (!this.props.accessory)
+        accessory = null;
     return (
       <TouchableHighlight onPress={this.props.onPress}>
         <Card {...this.props}>
-          {this.props.children}
+          <View style={styles.touchableContainer}>
+            <View style={{flex:1}}>
+              {contents}
+            </View>
+            <View style={{justifyContent:"center"}}>
+              {accessory}
+            </View>
+          </View>
         </Card>
       </TouchableHighlight>
     );
@@ -92,32 +114,22 @@ export class MemoCard extends Component {
   render() {
     let { text } = this.props;
     return (
-      <View>
-        <View style={styles.cardLabel}>
-          <BoldText style={styles.cardLabelText}>
-            Description
-          </BoldText>
-        </View>
-
-        <View style={styles.card}>
-          <View style={styles.cardBody}>
-            <ReadMore
-              numberOfLines={6}
-              renderTruncatedFooter={this._renderTruncatedFooter}
-              renderRevealedFooter={this._renderRevealedFooter}>
-              <RegularText style={styles.cardText}>
-                {text}
-              </RegularText>
-            </ReadMore>
-          </View>
-        </View>
-      </View>
+      <Card {...this.props}>
+        <ReadMore
+            numberOfLines={6}
+            renderTruncatedFooter={this._renderTruncatedFooter}
+            renderRevealedFooter={this._renderRevealedFooter}>
+            <RegularText style={styles.cardText}>
+            {text}
+            </RegularText>
+        </ReadMore>
+      </Card>
     );
   }
 
   _renderTruncatedFooter = (handlePress) => {
     return (
-      <RegularText style={{color: Color.tint, marginTop: 5}} onPress={handlePress}>
+      <RegularText style={{color: Color.tint, marginTop: 7}} onPress={handlePress}>
         Read more
       </RegularText>
     );
@@ -125,7 +137,7 @@ export class MemoCard extends Component {
 
   _renderRevealedFooter = (handlePress) => {
     return (
-      <RegularText style={{color: Color.tint, marginTop: 5}} onPress={handlePress}>
+      <RegularText style={{color: Color.tint, marginTop: 7}} onPress={handlePress}>
         Show less
       </RegularText>
     );
@@ -161,16 +173,7 @@ export class InstagramPhotosCard extends React.Component {
   }
 
   render() {
-    return (
-      <View>
-        <View style={styles.cardLabel} collapsible={false}>
-          <BoldText style={styles.cardLabelText}>
-            Photos from Instagram
-          </BoldText>
-        </View>
-        {this._renderInstagramPhotos()}
-      </View>
-    );
+    return this._renderInstagramPhotos()
   }
 
   _renderInstagramPhotos() {
@@ -178,18 +181,18 @@ export class InstagramPhotosCard extends React.Component {
 
     if (!images) {
       return (
-        <View style={[styles.card, styles.imageLoadingContainer]}>
+        <Card {...this.props} style={styles.imageLoadingContainer}>
           <ActivityIndicator />
-        </View>
+        </Card>
       );
     }
 
     return (
-      <View style={styles.card}>
+      <Card {...this.props} style={{marginRight: -20}}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           { images.map((image, i) => <InstagramPhoto key={i} item={image} list={images} />) }
         </ScrollView>
-      </View>
+      </Card>
     );
   }
 }
@@ -236,11 +239,11 @@ const styles = StyleSheet.create({
   },
   cardBody: {
     paddingVertical: 12,
-    paddingHorizontal: 10,
+    paddingHorizontal: Dims.horzPadding,
   },
   cardLabel: {
     marginTop: 20,
-    paddingLeft: 8,
+    paddingLeft: Dims.horzPadding,
     paddingBottom: 5,
   },
   cardLabelText: {
@@ -269,6 +272,9 @@ const styles = StyleSheet.create({
     marginTop: -1,
     color: '#9E9E9E',
   },
+  touchableContainer: {
+    flexDirection: "row"
+  },
   imageLoadingContainer: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -279,8 +285,9 @@ const styles = StyleSheet.create({
   instagramImage: {
     width: 125,
     height: 125,
-    marginVertical: 10,
-    marginHorizontal: 10,
+    marginVertical: 0,
+    marginHorizontal: 0,
+    marginRight: 10,
     borderRadius: 3,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: '#eee',

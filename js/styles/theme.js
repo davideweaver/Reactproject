@@ -8,4 +8,11 @@ const Dims = {
     horzPadding: 16
 }
 
-export { Color, Dims }
+const TextSize = {
+    tiny: 12,
+    small: 14,
+    normal: 16,
+    large: 18
+}
+
+export { Color, Dims, TextSize }

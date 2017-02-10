@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react"
 import { StyleSheet, Text } from "react-native"
+import Styles, { Color, Dims, TextSize } from "../styles"
 
 export class RegularText extends Component {
   render() {
@@ -27,14 +28,14 @@ export class BoldText extends Component {
 
 const styles = StyleSheet.create({
   regular: {
-    //fontFamily: "OpenSans",
+    fontSize: TextSize.normal
   },
   light: {
-    //fontFamily: "OpenSans-Light",
-    fontWeight: "100"
+    fontWeight: "100",
+    fontSize: TextSize.normal
   },
   bold: {
-    //fontFamily: "OpenSans-Bold",
-    fontWeight: "500"
+    fontWeight: "500",
+    fontSize: TextSize.normal
   },
 });

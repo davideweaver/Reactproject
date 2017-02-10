@@ -8,6 +8,38 @@ PODS:
   - MobileCenter/MobileCenterCrashes (0.3.7):
     - MobileCenter/MobileCenter
   - QBImagePickerController (3.4.0)
+  - React (0.40.0):
+    - React/Core (= 0.40.0)
+  - react-native-maps (0.12.4):
+    - React
+  - React/Core (0.40.0):
+    - React/cxxreact
+    - React/yoga
+  - React/cxxreact (0.40.0):
+    - React/jschelpers
+  - React/jschelpers (0.40.0)
+  - React/RCTActionSheet (0.40.0):
+    - React/Core
+  - React/RCTAnimation (0.40.0):
+    - React/Core
+  - React/RCTGeolocation (0.40.0):
+    - React/Core
+  - React/RCTImage (0.40.0):
+    - React/Core
+    - React/RCTNetwork
+  - React/RCTLinkingIOS (0.40.0):
+    - React/Core
+  - React/RCTNetwork (0.40.0):
+    - React/Core
+  - React/RCTSettings (0.40.0):
+    - React/Core
+  - React/RCTText (0.40.0):
+    - React/Core
+  - React/RCTVibration (0.40.0):
+    - React/Core
+  - React/RCTWebSocket (0.40.0):
+    - React/Core
+  - React/yoga (0.40.0)
   - RNMobileCenter (0.1.0):
     - MobileCenter (~> 0.3.0)
   - RSKImageCropper (1.5.2)
@@ -15,15 +47,35 @@ PODS:
 DEPENDENCIES:
   - MobileCenter (~> 0.3.0)
   - QBImagePickerController
+  - react-native-maps (from `../node_modules/react-native-maps`)
+  - React/Core (from `../node_modules/react-native`)
+  - React/RCTActionSheet (from `../node_modules/react-native`)
+  - React/RCTAnimation (from `../node_modules/react-native`)
+  - React/RCTGeolocation (from `../node_modules/react-native`)
+  - React/RCTImage (from `../node_modules/react-native`)
+  - React/RCTLinkingIOS (from `../node_modules/react-native`)
+  - React/RCTNetwork (from `../node_modules/react-native`)
+  - React/RCTSettings (from `../node_modules/react-native`)
+  - React/RCTText (from `../node_modules/react-native`)
+  - React/RCTVibration (from `../node_modules/react-native`)
+  - React/RCTWebSocket (from `../node_modules/react-native`)
   - RNMobileCenter (~> 0.1.0)
   - RSKImageCropper
+
+EXTERNAL SOURCES:
+  React:
+    :path: ../node_modules/react-native
+  react-native-maps:
+    :path: ../node_modules/react-native-maps
 
 SPEC CHECKSUMS:
   MobileCenter: cb53869e883407fe59f9ba05c9a4f9c9695e1411
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
+  React: 6dfb2f72edb1d74a800127ae157af038646673ce
+  react-native-maps: e9319eae383210f18795da40609cdcfd9b24ed53
   RNMobileCenter: 8ca8a27e2921a425196173e621751ccf2c406518
   RSKImageCropper: 27d0e7efa800b509720163c3561fe08a04853780
 
-PODFILE CHECKSUM: efa3adcb944a5b47126cc815b720c1700b9058cc
+PODFILE CHECKSUM: 46aa082453867151b2c6f0a54d74c5b717e57557
 
 COCOAPODS: 1.2.0
