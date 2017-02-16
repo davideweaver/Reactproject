@@ -3,9 +3,11 @@ import { StyleSheet, View, ScrollView, Text } from "react-native"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import { CardStack } from "react-navigation"
-import { Form, Separator, InputField, LinkField, KeyboardAwareScrollViewXX,
-  SwitchField, PickerField, DatePickerField, TimePickerField } from "react-native-form-generator"
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
+
+import { Form, Separator, InputField, LinkField, KeyboardAwareScrollView,
+  SwitchField, PickerField, DatePickerField, TimePickerField,
+  Field, FieldGroup, TouchableField, FieldGutter, DescriptionField } from "react-native-fields"
+
 import * as profileActions from "../actions/profileActions"
 import Styles, { Color, Dims, TextSize } from "../styles"
 
@@ -22,7 +24,7 @@ class ProfileEditView extends Component {
           title="Profile"
           />
         ),
-        style: {backgroundColor: "white"}
+        style: Styles.navbar
     })
   }
 
@@ -33,34 +35,6 @@ class ProfileEditView extends Component {
     }
   }
 
-  handleFormChange(formData){
-    /*
-    formData will contain all the values of the form,
-    in this example.
-
-    formData = {
-    first_name:"",
-    last_name:"",
-    gender: '',
-    birthday: Date,
-    has_accepted_conditions: bool
-    }
-    */
-
-    //this.setState({formData:formData})
-    //this.props.onFormChange && this.props.onFormChange(formData);
-
-    this.props.profileActions.saveDetails(formData.firstName, formData.lastName, formData.email, formData.gender, formData.bio, formData.instagramUsername)
-  }
-
-  handleFormFocus(e, component){
-    //console.log(e, component);
-  }
-
-  openTermsAndConditionsURL(){
-
-  }
-
   render() {
     const profile = this.props.profile;
 
@@ -68,15 +42,17 @@ class ProfileEditView extends Component {
 
       <Form
         ref='registrationForm'
-        onFocus={this.handleFormFocus.bind(this)}
-        onChange={this.handleFormChange.bind(this)}
-        label="Personal Information">
+        onFocus={this._handleFormFocus.bind(this)}
+        onChange={this._handleFormChange.bind(this)}>
 
-        <Separator containerStyle={{paddingTop: 15}} />
+        <Separator />
+
         <InputField
           ref="firstName"
           value={profile.firstName}
-          label='First Name'
+          label="First Name"
+          returnKeyType="next"
+          onSubmitEditing={(event) => this.refs.registrationForm.refs.lastName.focus()}
           helpText={((self)=>{
             if(Object.keys(self.refs).length !== 0){
               if(!self.refs.registrationForm.refs.firstName.valid){
@@ -108,10 +84,32 @@ class ProfileEditView extends Component {
             return true;
           }]}
           />
-        <InputField ref="lastName" label="Last Name" value={profile.lastName} />
-        <InputField ref="email" label="Email" value={profile.email} />
-        <PickerField ref="gender" value={profile.gender}
-          label='Gender'
+
+        <InputField 
+          ref="lastName" 
+          label="Last Name"
+          returnKeyType="next" 
+          onSubmitEditing={(event) => this.refs.registrationForm.refs.email.focus()}
+          value={profile.lastName} />
+
+        <InputField 
+          ref="email" 
+          label="Email" 
+          returnKeyType="next"
+          keyboardType="email-address"
+          onSubmitEditing={(event) => this.refs.registrationForm.refs.gender.focus()}
+          autoCapitalize="none"
+          spellCheck={false}
+          autoCorrect={false}
+          value={profile.email} 
+        />
+
+        <PickerField 
+          ref="gender" 
+          value={profile.gender}
+          label="Gender"
+          returnKeyType="next"
+          onSubmitEditing={(event) => this.refs.registrationForm.refs.bio.focus()}
           options={{
             "": '',
             male: 'Male',
@@ -120,17 +118,39 @@ class ProfileEditView extends Component {
 
         <Separator />
 
-        <InputField multiline={true} ref="bio" placeholder="Bio" value={profile.bio} />
+        <InputField 
+          multiline={true} 
+          ref="bio" 
+          placeholder="Bio" 
+          returnKeyType="next"
+          onSubmitEditing={(event) => this.refs.registrationForm.refs.instagramUsername.focus()}
+          value={profile.bio} 
+          style={{minHeight:130}} />
 
         <Separator label="Instagram" />
 
-        <InputField ref="instagramUsername" label="Instagram Id" value={profile.instagramUsername}
+        <InputField 
+          ref="instagramUsername" 
+          label="Username" 
+          value={profile.instagramUsername}
+          returnKeyType="done"
+          onSubmitEditing={(event) => {}}
+          autoCapitalize="none"
+          spellCheck={false}
+          autoCorrect={false}
           helpText="This will allow us to show some of your pictures"
           />
 
       </Form>
 
     </KeyboardAwareScrollView>);
+  }
+
+  _handleFormChange(formData){
+    this.props.profileActions.saveDetails(formData.firstName, formData.lastName, formData.email, formData.gender, formData.bio, formData.instagramUsername)
+  }
+
+  _handleFormFocus(e, component){
   }
 }
 

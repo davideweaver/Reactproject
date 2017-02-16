@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from "react"
 import { StyleSheet, View, ListView, Text, TouchableHighlight, TouchableOpacity } from "react-native"
 import { bindActionCreators } from "redux"
-import ListHeader from "../components/listHeader"
+import ListHeader from "../components/ListHeader"
 import { SwipeListView } from "react-native-swipe-list-view"
 import { connect } from "react-redux"
-import ToolbarButton from "../components/toolbarButton"
+import ToolbarButton from "../components/ToolbarButton"
 import * as sessionActions from "../actions/sessionActions"
 import Styles, { Color } from "../styles"
 

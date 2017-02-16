@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react"
 import { StyleSheet, View, Text, LayoutAnimation, TouchableOpacity } from "react-native"
 import dismissKeyboard from "react-native/Libraries/Utilities/dismissKeyboard"
-import Toolbar from "./toolbar"
-import Searchbar from "./searchbar"
+import Toolbar from "./Toolbar"
+import Searchbar from "./Searchbar"
 import Styles, { Color, Dims } from "../styles"
 
 export default class ListSearchHeader extends Component {

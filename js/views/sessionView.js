@@ -1,12 +1,13 @@
 import React, { Component } from "react"
-import { StyleSheet, View, Button, Text, ScrollView, Platform, Linking } from "react-native"
+import { StyleSheet, View, Button, Text, ScrollView, Platform, Linking, Image } from "react-native"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import { CardStack } from "react-navigation"
 import MapView from "react-native-maps"
-import ToolbarButton from "../components/toolbarButton"
+import ToolbarButton from "../components/ToolbarButton"
 import * as sessionActions from "../actions/sessionActions"
-import { Card, CardGroup, TouchableCard, CardGutter, MemoCard, InstagramPhotosCard } from '../components/cards';
+import { Field, FieldGroup, TouchableField, FieldGutter, DescriptionField, InstagramPhotosField } from "react-native-fields"
+import randomImage from "../lib/randomImage"
 import Styles, { Color, TextSize } from "../styles"
 
 const BackButton = CardStack.Header.BackButton;
@@ -22,7 +23,7 @@ class SessionView extends Component {
           title="All"
           />
         ),
-        style: {backgroundColor: "white"}
+        style: Styles.navbar
     })
   }
 
@@ -34,6 +35,12 @@ class SessionView extends Component {
     const session = this.props.session;
     const favicon = session.isFavorite ? "heart" : "heart-outline";
     const location = `${session.location} Building`
+    const desc = (session.description) ? (<FieldGroup><DescriptionField title="Description" text={session.description} /></FieldGroup>) : null;
+    const tags = (session.tags && session.tags.length > 0) ? <Field>{this._renderTags(session.tags)}</Field> : null;
+    let imgSource = {uri:session.image};
+    if (!imgSource.uri || imgSource.uri.indexOf("davidweaver02") < 0) {
+      imgSource = randomImage();
+    }
     return (
       <View style={Styles.cardContainer}>
         <ScrollView>
@@ -47,19 +54,23 @@ class SessionView extends Component {
               onPress={() => this.props.sessionActions.toggleFavorite(session.id)} />
           </View>
 
-          <CardGroup>
-            <MemoCard title="Description" text={session.description} />
-          </CardGroup>
+          
+            <Image
+              style={styles.image}
+              source={imgSource}
+              resizeMode="cover"
+            />
+          
 
-          <CardGroup title="Details">
-            <Card text={location} />
-            <Card>
-              {this._renderTags(session.tags)}
-            </Card>
-          </CardGroup>
+          {desc}
 
-          <CardGroup title="Map">
-            <Card style={styles.mapContainer}>
+          <FieldGroup title="Details">
+            <Field text={location} />
+            {tags}
+          </FieldGroup>
+
+          <FieldGroup title="Map">
+            <Field style={styles.mapContainer}>
               <MapView style={styles.map}
                 initialRegion={{
                 latitude: 40.053275,
@@ -73,12 +84,12 @@ class SessionView extends Component {
                   description={session.title}
                 />
               </MapView>
-            </Card>
-            <TouchableCard 
+            </Field>
+            <TouchableField 
               text="Open in Maps" 
               accessory={true}
               onPress={this._handleOpenInMaps.bind(this)} />
-          </CardGroup>
+          </FieldGroup>
 
         </ScrollView>
       </View>
@@ -120,13 +131,18 @@ let styles = StyleSheet.create({
     flex: 1,
     fontWeight: "bold",
     marginTop: 6,
-    fontSize: 18
+    fontSize: 18,
+    marginBottom: 8
   },
   favButton: {
     flex: 1
   },
   description: {
     marginBottom: 10
+  },
+  image: {
+    width: null,
+    height: 200
   },
   tag: {
     fontSize: TextSize.normal

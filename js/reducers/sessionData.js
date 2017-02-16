@@ -22,6 +22,7 @@ function fromParseSession(obj, state) {
     endTime: obj.get('endTime') && obj.get('endTime').getTime(),
     map: obj.get('sessionMap') && obj.get('sessionMap').url(),
     location: obj.get('sessionLocation'),
+    image: obj.get('ogImage') && obj.get('ogImage').url(),
   };
   session.isFavorite = state.favoriteSessionIds.find(id => id == obj.id) !== undefined;
   return session;

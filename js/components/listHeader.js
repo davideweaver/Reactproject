@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react"
 import { StyleSheet, View, Text, ActivityIndicator } from "react-native"
-import Toolbar from "./toolbar"
+import Toolbar from "./Toolbar"
 import Styles, { Color, Dims } from "../styles"
 
 export default class ListHeader extends Component {

@@ -3,9 +3,10 @@ import { StyleSheet, View, Text, TouchableOpacity, Image, ScrollView } from "rea
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import * as profileActions from "../actions/profileActions"
-import ToolbarButton from "../components/toolbarButton"
+import { authActions } from "../modules/auth"
+import ToolbarButton from "../components/ToolbarButton"
 import ImagePicker from "react-native-image-crop-picker"
-import { Card, CardGroup, TouchableCard, CardGutter, MemoCard, InstagramPhotosCard } from '../components/cards';
+import { Field, FieldGroup, TouchableField, FieldGutter, DescriptionField, InstagramPhotosField } from "react-native-fields"
 import Styles, { Color, Dims, TextSize } from "../styles"
 
 class ProfileView extends Component {
@@ -15,10 +16,10 @@ class ProfileView extends Component {
     header: ({goBack}) => ({
       right: (
         <TouchableOpacity onPress={() => goBack(null)}>
-          <Text style={Styles.navbarButtonText}>Done</Text>
+          <Text style={Styles.navbarActiveButtonText}>Done</Text>
         </TouchableOpacity>
         ),
-        style: {backgroundColor: "white"}
+        style: Styles.navbar
     })
   }
 
@@ -27,7 +28,7 @@ class ProfileView extends Component {
     this.state = {
     }
   }
-
+  
   render() {
     const profile = this.props.profile;
 
@@ -39,8 +40,8 @@ class ProfileView extends Component {
       <View style={Styles.cardContainer}>
         <ScrollView>
 
-          <CardGroup>
-            <TouchableCard grouped={true} onPress={() => {
+          <FieldGroup>
+            <TouchableField grouped={true} onPress={() => {
                 this.props.navigation.navigate("ProfileStack")
               }} accessory={true}>
               <View style={styles.profileContainer}>
@@ -50,29 +51,34 @@ class ProfileView extends Component {
                   <Text style={styles.profileEmail}>{profile.email}</Text>
                 </View>
               </View>
-            </TouchableCard>
-            <TouchableCard onPress={this._choosePicture.bind(this)} text="Choose Picture" />
-          </CardGroup>
+            </TouchableField>
+            <TouchableField onPress={this._choosePicture.bind(this)} text="Choose Picture" />
+            <TouchableField onPress={this._logOut.bind(this)} text="Logout" />
+          </FieldGroup>
 
-          <CardGroup title="Bio">
-            <MemoCard text={profile.bio}>
-            </MemoCard>
-          </CardGroup>
+          <FieldGroup title="Bio">
+            <DescriptionField text={profile.bio}>
+            </DescriptionField>
+          </FieldGroup>
 
-          <CardGroup title="Instagram">
-            <InstagramPhotosCard profile="davideweaver" />
-            <Card text={profile.instagramUsername} />
-          </CardGroup>
+          <FieldGroup title="Instagram">
+            <InstagramPhotosField profile="davideweaver" />
+            <Field text={profile.instagramUsername} />
+          </FieldGroup>
 
-          <CardGroup title="Tests">
-            <TouchableCard onPress={this._testError.bind(this)} text="Throw Exception" />
-          </CardGroup>
+          <FieldGroup title="Tests">
+            <TouchableField onPress={this._testError.bind(this)} text="Throw Exception" />
+          </FieldGroup>
 
-          <CardGutter />
+          <FieldGutter />
 
         </ScrollView>
       </View>
     );
+  }
+
+  _logOut() {
+    this.props.authActions.logout(this.props.navigation);
   }
 
   _testError() {
@@ -123,13 +129,15 @@ let styles = StyleSheet.create({
 
 function select(state) {
   return {
-    profile: state.profile
+    profile: state.profile,
+    auth: state.auth
   };
 }
 
 function actions(dispatch) {
   return {
-    profileActions: bindActionCreators(profileActions, dispatch)
+    profileActions: bindActionCreators(profileActions, dispatch),
+    authActions: bindActionCreators(authActions, dispatch)
   }
 }
 

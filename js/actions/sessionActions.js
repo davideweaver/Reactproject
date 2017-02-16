@@ -8,9 +8,9 @@ function shouldLoadSessions(state) {
 
 export function load() {
   return async (dispatch, getState) => {
-    if(!shouldLoadSessions(getState())){
-      return Promise.resolve();
-    }
+    //if(!shouldLoadSessions(getState())){
+    //  return Promise.resolve();
+    //}
 
     dispatch({type: Types.SESSIONS_LOAD_START});
 

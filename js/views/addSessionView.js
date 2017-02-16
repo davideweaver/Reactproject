@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { StyleSheet, View } from "react-native"
 import { connect } from "react-redux"
-import ToolbarButton from "../components/toolbarButton"
+import ToolbarButton from "../components/ToolbarButton"
 
 class AddSessionView extends Component {
 

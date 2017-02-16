@@ -5,15 +5,18 @@ import { StackNavigator, TabNavigator } from "react-navigation"
 import Icon from "react-native-vector-icons/Ionicons"
 import Styles, { Color } from "./styles"
 
-import DiscoverView from "./views/discoverView"
-import SessionsView from "./views/sessionsView"
-import AddSessionView from "./views/addSessionView"
-import SessionView from "./views/sessionView"
-import SearchView from "./views/searchView"
-import FavoritesView from "./views/favoritesView"
-import ProfileView from "./views/profileView"
-import ProfileEditView from "./views/profileEditView"
-import EmptyView from "./views/emptyView"
+import DiscoverView from "./views/DiscoverView"
+import SessionsView from "./views/SessionsView"
+import AddSessionView from "./views/AddSessionView"
+import SessionView from "./views/SessionView"
+import SearchView from "./views/SearchView"
+import FavoritesView from "./views/FavoritesView"
+import ProfileView from "./views/ProfileView"
+import ProfileEditView from "./views/ProfileEditView"
+import { LoginView } from "./modules/auth"
+import EmptyView from "./views/EmptyView"
+
+let initialRoute = "Tabs";
 
 const FiltersStack = StackNavigator({
   FirstFilter: { screen: EmptyView },
@@ -40,7 +43,6 @@ const ModalsStack = StackNavigator({
   Profile: { screen: ProfileView },
   ProfileStack: { screen: ProfileStack }
 }, {
-  //initialRouteName: "Profile",
 });
 
 const SessionStack = StackNavigator({
@@ -131,9 +133,10 @@ const Tabs = TabNavigator({
 
 export default Nav = StackNavigator({
   Tabs: { screen: Tabs },
-  Modals: { screen: ModalsStack }
+  Modals: { screen: ModalsStack },
+  Login: { screen: LoginView }
 }, {
-  initialRouteName: "Tabs",
+  initialRouteName: initialRoute,
   headerMode: "none",
   mode: "modal"
 });

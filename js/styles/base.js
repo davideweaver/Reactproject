@@ -18,7 +18,22 @@ export default {
         flex: 1,
         backgroundColor: "rgb(248, 247, 250)",
     },
+
+    navbar: {
+        backgroundColor: "white"
+    },
+
     navbarButtonText: {
+        color: Color.tint,
+        paddingTop: 6,
+        paddingBottom: 4,
+        paddingLeft: 8,
+        paddingRight: 16,
+        fontSize: 16,
+        fontWeight: "400"
+    },
+
+    navbarActiveButtonText: {
         color: Color.tint,
         paddingTop: 6,
         paddingBottom: 4,

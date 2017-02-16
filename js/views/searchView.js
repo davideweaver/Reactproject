@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import * as sessionActions from "../actions/sessionActions"
 import * as searchActions from "../actions/searchActions"
-import ListSearchHeader from "../components/listSearchHeader"
+import ListSearchHeader from "../components/ListSearchHeader"
 import ActionSheet from "react-native-actionsheet"
 import Styles, { Color, Dims } from "../styles"
 

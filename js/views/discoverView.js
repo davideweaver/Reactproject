@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react"
 import { StyleSheet, View, ListView, Text, TouchableHighlight, TouchableOpacity, Image } from "react-native"
-import ListHeader from "../components/listHeader"
+import ListHeader from "../components/ListHeader"
 import { connect } from "react-redux"
-import ToolbarButton from "../components/toolbarButton"
+import ToolbarButton from "../components/ToolbarButton"
 import Styles, { Color, Dims } from "../styles"
 
 class DiscoverView extends Component {
@@ -16,7 +16,19 @@ class DiscoverView extends Component {
       ])
     };
   }
-  
+
+  componentWillReceiveProps(nextProps) {
+    /*console.log("nextProps", nextProps)
+    if (nextProps.auth && nextProps.auth.form.isValid == false) {
+      //this.props.navigation.navigate("Login");
+      this.props.navigation.navigate("Modals", {}, {
+        type: "Navigation/NAVIGATE", 
+        routeName: "Login"
+      })
+    }*/
+    // TODO
+  }
+
   render() {
     return (
       <View style={Styles.screenTop}>
@@ -108,7 +120,8 @@ let styles = StyleSheet.create({
 
 function select(state) {
   return {
-    profile: state.profile
+    profile: state.profile,
+    auth: state.auth
   };
 }
 
